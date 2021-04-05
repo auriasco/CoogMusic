@@ -23,7 +23,7 @@ class DbService {
         return instance ? instance : new DbService();
     }
 
-    async getAllData() {
+    async getArtistData() {
         try {
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT * FROM Artist;";
@@ -33,7 +33,7 @@ class DbService {
                     resolve(results);
                 })
             });
-            console.log(response);
+            //console.log(response);
             return response;
         } catch (error) {
             console.log(error);

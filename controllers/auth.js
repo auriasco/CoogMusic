@@ -47,6 +47,16 @@ async function userExistsCheck(tableUserVar, tableName, testVal){
 }
 */
 
+exports.viewUsers = (req, res)=>{
+
+    let users = db.query(`SELECT * FROM User`);
+    //console.log(users);
+    req.flash('data', users);
+    return res.redirect('/viewUsers');
+
+}
+
+
 exports.register =  (req, res)=>{
     console.log(req.body);
 
@@ -82,16 +92,7 @@ exports.register =  (req, res)=>{
     //Not a musician 
     if(isMusician === false)
     {
-        db2.query(`INSERT INTO User SET ?`, {
-            artist_idF: artist_id, 
-            user_id: uniqueId, 
-            user_name: username, 
-            user_email: email, 
-            country: country, 
-            age: currAge , 
-            user_password: password, 
-            user_name_display: name
-        });
+        db2.query(`INSERT INTO User SET ?`, {artist_idF: artist_id, user_id: uniqueId, user_name: username, user_email: email, country: country, age: currAge , user_password: password, user_name_display: name});
         req.flash('welcomeName', username);
         req.flash('userId', uniqueId);
         req.flash('userName', name);
@@ -105,19 +106,14 @@ exports.register =  (req, res)=>{
 
 
     }else{
-        db2.query(`INSERT INTO Artist SET ?`, {
-            artist_id: uniqueId,
-            artist_name: username,
-            artist_email: email,
-            country: country,
-            background_link: 'null',
-            website_url: 'null',
-            artist_password: password,
-            artist_name_display: name
-        });
-        return res.render('register', {
-            message: 'Musician registered'
-        });
+        db2.query(`INSERT INTO Artist SET ?`, {artist_id: uniqueId, artist_name: username, artist_email: email, country: country, background_link: 'null', website_url: 'null', artist_password: password, artist_name_display: name});
+        req.flash('welcomeName', username);
+        req.flash('userId', uniqueId);
+        req.flash('userName', name);
+        req.flash('Birth',DOB);
+        req.flash('Country',country);
+        req.flash('email',email);
+        return res.redirect('/successRegister_Artist');
     }   
         
 }
@@ -144,8 +140,16 @@ exports.updateUserProfile = (req, res)=>{
                 console.log('name');
                 console.log(err);
             }
+            
+
         });
-        
+        req.flash('displayName', name);
+
+    }else{
+        console.log('name not changing');
+        let nameOld = db.query(`SELECT user_name_display FROM User WHERE user_id = ?`, [userId]);
+        console.log(nameOld);
+        req.flash('displayName', nameOld.user_name_display);
     }
     
     if(email != ''){
@@ -155,7 +159,13 @@ exports.updateUserProfile = (req, res)=>{
                 console.log('email');
                 console.log(err);
             }
+            
         });
+        req.flash('email',email);
+    }else{
+        //req.flash('displayName', name);
+        let emailOld = db.query(`SELECT user_email FROM User WHERE user_id = ?`, [userId]);
+        req.flash('email', emailOld.user_email);
 
     }
 
@@ -178,6 +188,11 @@ exports.updateUserProfile = (req, res)=>{
     req.flash('Country',country);
     req.flash('email',email);
     */
+    req.flash('userId', userId);
+    req.flash('DOB',DOB);
+    req.flash('country',country);
+    console.log('end');
+
     return res.redirect('/editProfile');
 
 
@@ -207,4 +222,55 @@ exports.updateUserProfile = (req, res)=>{
     //    `UPDATE User SET user_email = ${email}, country = ${country}, age = ${currAge}, user_password = ${password}, user_name_display = ${name} WHERE user_id = ${userId} AND (${email} IS NOT NULL) OR (${country} IS NOT NULL) OR (${currAge} IS NOT NULL) OR (${password} IS NOT NULL) OR (${name} IS NOT NULL);` 
     //    );
 
-}
+};
+
+exports.login  = (req, res) =>{
+
+    const{username, password} = req.body;
+    console.log(req.body);
+
+    if(username == 'admin' && password == 'admin'){
+        //redirect to admin page
+        return res.redirect('/admin_index');
+    }
+
+    //USER
+    let results = db.query(`SELECT * FROM User WHERE user_name = ?`, [username]);
+    let results2 = db.query(`SELECT * FROM Artist WHERE artist_name = ?`, [username]);
+    if(results.length <= 0 && results2.length <=0){
+        console.log('DNE');
+        return res.render('login', {
+            message: 'Try again: Username or password do not match'
+        });
+
+    }else{
+
+        if(results.length <= 0){
+            //artist
+            req.flash('welcomeName', username);
+            req.flash('userId', results2[0].user_id);
+            req.flash('userName', results2[0].user_name_display);
+            //req.flash('Birth',results[0].);
+            req.flash('Country',results2[0].country);
+            req.flash('email',results2[0].user_email);
+            return res.redirect('/artist_index');
+
+        }else{
+            //user
+            //login successful
+            req.flash('welcomeName', username);
+            req.flash('userId', results[0].user_id);
+            req.flash('userName', results[0].user_name_display);
+            //req.flash('Birth',results[0].);
+            req.flash('Country',results[0].country);
+            req.flash('email',results[0].user_email);
+            return res.redirect('/user_index');
+
+        }
+
+    }
+
+
+
+    
+};
