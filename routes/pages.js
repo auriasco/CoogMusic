@@ -18,7 +18,13 @@ router.get('/login', (req,res)=>{
 
 //View artists
 router.get('/artists', (req,res)=>{
-    res.render('artists');
+    const db = dbService.getDbServiceInstance();
+    const result = db.getAllData();
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+
+    res.render('artists', result);
 });
 
 //User Page
