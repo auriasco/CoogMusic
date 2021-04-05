@@ -82,7 +82,16 @@ exports.register =  (req, res)=>{
     //Not a musician 
     if(isMusician === false)
     {
-        db2.query(`INSERT INTO User SET ?`, {artist_idF: artist_id, user_id: uniqueId, user_name: username, user_email: email, country: country, age: currAge , user_password: password, user_name_display: name});
+        db2.query(`INSERT INTO User SET ?`, {
+            artist_idF: artist_id, 
+            user_id: uniqueId, 
+            user_name: username, 
+            user_email: email, 
+            country: country, 
+            age: currAge , 
+            user_password: password, 
+            user_name_display: name
+        });
         req.flash('welcomeName', username);
         req.flash('userId', uniqueId);
         req.flash('userName', name);
@@ -96,10 +105,19 @@ exports.register =  (req, res)=>{
 
 
     }else{
-        db2.query(`INSERT INTO Artist SET ?`, {artist_id: uniqueId, artist_name: username, artist_email: email, country: country, background_link: 'null', website_url: 'null', artist_password: password, artist_name_display: name});
+        db2.query(`INSERT INTO Artist SET ?`, {
+            artist_id: uniqueId,
+            artist_name: username,
+            artist_email: email,
+            country: country,
+            background_link: 'null',
+            website_url: 'null',
+            artist_password: password,
+            artist_name_display: name
+        });
         return res.render('register', {
-            message: 'Musician registered' 
-         });
+            message: 'Musician registered'
+        });
     }   
         
 }

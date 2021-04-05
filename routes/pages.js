@@ -16,6 +16,11 @@ router.get('/login', (req,res)=>{
     res.render('login');
 });
 
+//View artists
+router.get('/artists', (req,res)=>{
+    res.render('artists');
+});
+
 //User Page
 router.get('/successRegister_User', (req, res)=>{
     //name = username, userName = display name 
