@@ -55,6 +55,6 @@ app.use(flash());
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
 
-app.listen(5500, ()=>{
+app.listen(5000, ()=>{
     console.log("Server started");
 });
