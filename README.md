@@ -1,19 +1,19 @@
-Dev Guide
+DEV GUIDE
 
 Installation:
 
-1 ) Install git - https://git-scm.com/downloads
-    git --version
+    1 ) Install git - https://git-scm.com/downloads
+        git --version
 
-2) If using VSCode, install extensions:
-    GitHub
-    GitHub Pull Requests and Issues
-    Live Server
+    2) If using VSCode, install extensions:
+        GitHub
+        GitHub Pull Requests and Issues
+        Live Server
 
-3) In the bottom left, click the profile icon and sign into GitHub
+    3) In the bottom left, click the profile icon and sign into GitHub
 
-4) Change your default terminal to git bash
-    Ctrl + Shift + P -> Terminal: Select Default Shell -> Git Bash
+    4) Change your default terminal to git bash
+        Ctrl + Shift + P -> Terminal: Select Default Shell -> Git Bash
 
 
 Git Hub:
@@ -86,10 +86,17 @@ Git Hub:
     1 ) To stop tracking this project with git:
         rm -rf .git
 
-Deployment
 
-1 ) Activate the build pipeline
-    ssh host@coogmusic.xyz 'bash ~/work.sh'
+Local Host:
 
-2 ) Type in the password
-    host
+    1 ) Local host (https://localhost:5000)
+        nodemon app.js
+
+
+Deployment:
+
+    1 ) Activate the build pipeline (https://www.coogmusic.xyz)
+        ssh host@coogmusic.xyz 'bash ~/work.sh'
+
+    2 ) Type in the password
+        host
