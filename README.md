@@ -73,13 +73,13 @@ Git Hub:
     PUSHING CHANGES
 
     1 ) Pull any new changes from the main branch before pushing
-        git pull origin master
+        git pull origin main
 
     2 ) To push your branch to the main branch:
         git push -u origin <branch_name>
 
     3 ) To push the entire local repository:
-        git push origin master
+        git push origin main
 
 To stop tracking this project with git:
     rm -rf .git
