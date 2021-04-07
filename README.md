@@ -81,5 +81,15 @@ Git Hub:
     3 ) To push the entire local repository:
         git push origin main
 
-To stop tracking this project with git:
-    rm -rf .git
+    FINALLY
+
+    1 ) To stop tracking this project with git:
+        rm -rf .git
+
+Deployment
+
+1 ) Activate the build pipeline
+    ssh host@coogmusic.xyz 'bash ~/work.sh'
+
+2 ) Type in the password
+    host
