@@ -91,12 +91,3 @@ Local Host:
 
     1 ) Local host (https://localhost:5000)
         nodemon app.js
-
-
-Deployment:
-
-    1 ) Activate the build pipeline (https://www.coogmusic.xyz)
-        ssh host@coogmusic.xyz 'bash ~/work.sh'
-
-    2 ) Type in the password
-        host
