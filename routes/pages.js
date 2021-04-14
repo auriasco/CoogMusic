@@ -1,5 +1,6 @@
 const express = require('express');
 const router  = express.Router();
+const authController = require('../controllers/auth');
 
 //Homepage
 router.get('/', (req,res)=>{
@@ -16,71 +17,44 @@ router.get('/login', (req,res)=>{
     res.render('login');
 });
 
-//User Page
-router.get('/successRegister_User', (req, res)=>{
-    //name = username, userName = display name 
-    //console.log(req.body);
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), DOB: req.flash('Birth'), country: req.flash('Country'), email: req.flash('email') };
-    //console.log('tee');
-    console.log(test);
-    res.render('successRegister_User', test);
+//////////////// USER PAGE ////////////////////////////////
+
+router.get('/successRegister_User', authController.getAccount, (req, res)=>{
+
+    if(req.acc){
+        res.render('successRegister_User', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
 });
 
-router.get('/successRegister_Artist', (req, res)=>{
-    //name = username, userName = display name 
-    //console.log(req.body);
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), DOB: req.flash('Birth'), country: req.flash('Country'), email: req.flash('email') };
-    //console.log('tee');
-    console.log(test);
-    res.render('successRegister_Artist', test);
+router.get('/user_index', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('user_index', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
 });
 
-router.post('/editProfile', (req,res)=>{
-    console.log('POSTGTTT');
-    let userInfo = {userId: req.body.idNum, displayName: req.body.displayName, DOB: req.body.DOB, country: req.body.country, email: req.body.email};
-
-    /*
-    if(Object.keys(req.flash()).length != 0){
-        console.log('KEEEE');
-        userInfo.DOB = req.flash('DOB');
-        userInfo.userId = req.flash('userId');
-        userInfo.country = req.flash('country');
-
-        if(Object.keys(req.flash('email')).length != 0){
-            userInfo.email = req.flash('email');
-        }
-
-        if(Object.keys(req.flash('displayName')).length != 0){
-            userInfo.displayName = req.flash('displayName');
-        }
-        //add message
-    }*/
-    res.render('editProfile', userInfo);
-    console.log(userInfo);
+router.get('/editProfile', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('editProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});
+    }else{
+        res.redirect('/login');
+    }
 });
 
-router.get('/editProfile', (req,res)=>{
-    console.log('GETTTTTT');
-    const userInfo = {userId: req.flash('userId'), displayName: req.flash('displayName'), DOB: req.flash('DOB'), country: req.flash('country'), email: req.flash('email')};
-    console.log(userInfo);
-    res.render('editProfile', userInfo);
-});
 
-/*
-router.post('/user_index', (req,res)=>{
-    console.log('POST');
-    res.render('user_index', {userName: req.get()});
-})
-*/
+////////////////////////////////////////////////
 
+//////////////// ADMIN PAGE ////////////////////////////////
 router.get('/viewUsers', (req, res)=>{
-    //console.log(req.flash('data'));
-    console.log('we in here');
     res.render('viewUsers',{userData: req.flash('data')});
-    //req.flash('welcomeName',messages);
-    //res.render('user_index',{messages: req.flash('welcomeName')});
 });
 
+router.get('/viewArtistsAdmin', (req, res)=>{
+    res.render('viewArtistsAdmin',{artistData: req.flash('data')});
+});
 
 router.get('/admin_index', (req, res)=>{
     console.log('GET');
@@ -89,24 +63,41 @@ router.get('/admin_index', (req, res)=>{
     //res.render('user_index',{messages: req.flash('welcomeName')});
 });
 
-router.get('/artist_index', (req, res)=>{
-    console.log('GET');
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), country: req.flash('Country'), email: req.flash('email') };
-    res.render('artist_index', test);
-    //req.flash('welcomeName',messages);
-    //res.render('user_index',{messages: req.flash('welcomeName')});
+////////////////////////////////////////////////
+
+
+
+//////////////// ARTIST PAGE ////////////////
+router.get('/editArtistProfile', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('editArtistProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});
+    }else{
+        res.redirect('/login');
+    }
 });
 
-router.get('/user_index', (req, res)=>{
-    console.log('GET');
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), country: req.flash('Country'), email: req.flash('email') };
-    res.render('user_index', test);
-    //req.flash('welcomeName',messages);
-    //res.render('user_index',{messages: req.flash('welcomeName')});
+router.get('/successRegister_Artist', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('successRegister_Artist', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
 });
 
 
-//Musician Page
+router.get('/artist_index', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('artist_index', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+
+
+////////////////////////////////////////////////
+
+
 
 
 module.exports = router;
