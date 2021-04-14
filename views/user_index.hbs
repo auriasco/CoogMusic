@@ -20,29 +20,8 @@
                 <li> <a href="/ViewMusic">View Music</a>  </li>
                 <li> <a href="/ViewArtists">View Artists</a>  </li>
                 <li> <a href="/CreatePlaylist">Create Playlist </a>  </li>
-                 <li> <form action="/editProfile" method="POST"> 
-                    <input style="display:none;" type="text" name="displayName" value={{displayName}}>
-                    <input style="display:none;" type="text" name="DOB" value={{DOB}}>
-                    <input style="display:none;" type="text" name="country" value={{country}}>
-                    <input style="display:none;" type="text" name="email" value={{email}}>
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Edit Profile</button> 
-                    
-                    <!--
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Edit Profile</button> 
-                    <button style="display:none;" type="text" name="displayName" value={{displayName}}>test</button>
-                    <button style="display:none;" type="text" name="DOB" value={{DOB}}>test2</button>
-                    <button style="display:none;" type="text" name="country" value={{country}}>test3</button>
-                    <button style="display:none;" type="text" name="email" value={{email}}>test4</button>
-
-
-                    <button type="button" name="displayName" value={{displayName}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="DOB" value={{DOB}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="country" value={{country}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="email" value={{email}} style="display:none;" display="none" visibility="hidden"></button> 
-                    -->
-                </form>  
-                </li>
-                <li> <a href="/">Sign Out</a></li>
+                <li><a href="/editProfile">Edit Profile</a></li>
+                <li> <a href="/auth/logout">Sign Out</a></li>
 
             </ul>
         
@@ -50,7 +29,7 @@
 
     <div class="container mt-4"> 
         <div class="jumbotron">
-        <h1 class="display-4"> <b>Welcome to your dashboard {{userName}}</b></h1>
+        <h1 class="display-4"> <b>Welcome back, {{acc.user_name_display}} (@{{acc.user_name}})</b></h1>
         <p class="lead">Keep up to date with all your followed musicians</p>
         <hr class="my-4">
         <p>Put notifications here - TBD</p>
