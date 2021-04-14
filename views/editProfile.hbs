@@ -23,36 +23,44 @@
                 <li> <a href="/viewArtists">View Artists</a>  </li>
                 <li> <a href="/createPlaylist">Create Playlist </a>  </li>
                 <li> <a href="/editProfile">Edit Profile</a>  </li>
-                <li> <a href="/">Sign Out</a></li>
+                <li> <a href="/auth/logout">Sign Out</a></li>
 
             </ul>
         
     </nav>
 
     <div class="container mt-4"> 
+    {{#if error}}
+        <h4 class="alert alert-danger mt-4">{{error}}</h4>
+    {{/if}}
+
+    {{#if success}}
+        <h4 class="alert alert-success mt-4">{{success}}</h4>
+    {{/if}}
+
 
         <form action="/auth/updateUserProfile" method="POST">
 
         <div class="form-group" style="padding-top: 25px;">
             <label for="name">Name </label>
-            <input type="text" class="form-control" id="name" name="name" placeholder={{displayName}}>
+            <input type="text" class="form-control" id="name" name="name" placeholder="{{acc.user_name_display}}">
         </div>
     
         <div class="form-group" style="padding-top: 25px;">
             <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder={{email}} >
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="{{acc.user_email}}" >
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
 
         <div class="form-group" style="padding-top: 25px;">
             <label for="DOB" class="col-2 col-form-label">Date of birth</label>
-            <input class="form-control" type="date" value={{DOB}} id="DOB" name="DOB">
+            <input class="form-control" type="date" value="DOB" id="DOB" name="DOB">
         </div>
 
         <div class="form-group" style="padding-top: 25px;">
             <label for="country">Country</label>
-            <select class="form-control" id="country" name="country" placeholder={{country}}>
-            <option value={{country}}>(Current) {{country}}</option>
+            <select class="form-control" id="country" name="country" placeholder={{acc.country}}>
+            <option value={{acc.country}}>(Current) {{acc.country}}</option>
             <option>Canada</option>
             <option>Greenland</option>
             <option>Mexico</option>
@@ -70,15 +78,9 @@
             <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
         </div>
 
-        <input style="display:none;" type="text" name="userId" value={{userId}}>
-
+        <input style="display:none;" type="text" name="userId" value={{acc.user_id}}>
         <button type="submit" class="btn btn-primary">update</button>
-
     </form>
-    {{#if message}}
-        <h4 class="alert alert-success mt-4">{{message}}</h4>
-    {{/if}}
-
 
     </div>
 
