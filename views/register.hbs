@@ -82,21 +82,72 @@
             <small id="checkBoxHelp" class="form-text text-muted"><br>If you are a musician, you will be able to upload your own songs. Otherwise, you can only listen to musician's songs.</small>
           </div>
 
-        <button type="submit" class="btn btn-primary">Register</button>
 
+        <!-- Musician info -->
+        <div class="musicianDrop">
+
+            <label for="exampleFormControlTextarea1" class="form-label">Enter a biography/description of yourself or your band!</label>
+            <small id="textboxhelp" class="form-text text-muted">(1000 char limit)</small>
+            <textarea class="form-control" name="biography" id="biography" rows="3"></textarea>
+
+        
+            <label for="basic-url" class="form-label">Facebook page</label>
+            <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">https://www.facebook.com/example</span>
+            <input type="fb" class="form-control" name="fb_url" id="fb_url" aria-describedby="basic-addon3">
+            </div>
+
+            <label for="basic-url" class="form-label">Instagram page</label>
+            <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">https://www.instagram.com/example</span>
+            <input type="ig" class="form-control" name="ig_url" id="ig_url" aria-describedby="basic-addon3">
+            </div>
+
+            <label for="basic-url" class="form-label">Spotify page</label>
+            <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">https://open.spotify.com/artist/example</span>
+            <input type="spotify" class="form-control" name= "spotify_url" id="spotify_url" aria-describedby="basic-addon3">
+            </div>
+
+            <label for="basic-url" class="form-label">Soundcloud page</label>
+            <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">https://soundcloud.com/example</span>
+            <input type="soundcloud" class="form-control" name="soundcloud_url" id="soundcloud_url" aria-describedby="basic-addon3">
+            </div>
+
+
+            <label for="basic-url" class="form-label">Personal page</label>
+            <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3"></span>
+            <input type="personal" class="form-control" name="personal_url" id="personal_url" aria-describedby="basic-addon3">
+            </div>
+
+            <!--
+            <div class="mb-3">
+            <label for="formFile" class="form-label">Musician profile picture</label>
+            <input class="form-control" type="file" id="formFile">
+            </div>
+            -->
+
+        </div>
+
+        <!-- Script Toggle musician info -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript">
+        $('[type="checkbox"][name="checkbox"]').change(function(){
+            $('div.musicianDrop').toggle(this.checked);
+        });
+        </script>
+        <!-- Script Toggle musician info -->
+
+        <button type="submit" class="btn btn-primary">Register</button>
+        
     </form>
     {{#if message}}
         <h4 class="alert alert-danger mt-4">{{message}}</h4>
     {{/if}}
-
-
     </div>
-
-
     </div>
-
-
-    <script src="js/jquery-1.10.2.min.js"></script>
     <script src="js/bootstrap-formhelpers.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>    
     
