@@ -1,5 +1,6 @@
 const express = require('express');
 const router  = express.Router();
+const dbService = require('../controllers/dbService');
 const authController = require('../controllers/auth');
 
 //Homepage
@@ -17,6 +18,15 @@ router.get('/login', (req,res)=>{
     res.render('login');
 });
 
+//User Page
+router.get('/getNotifications', (request, response) => {
+    const db = dbService.getDbServiceInstance();
+    const result = db.getNotifications();
+    console.log(result);
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+})
 
 /*
 USE OF COOKIES: authController.getAccount = the middleware function to  get the cookies

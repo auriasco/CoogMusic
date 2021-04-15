@@ -14,7 +14,6 @@ exports.register
 exports.updateArtistProfile
 exports.updateUserProfile
 exports.login
-
 */
 
 //use db for queries, don't need to update anything
@@ -53,6 +52,7 @@ filled in the order of the array:
 Need to use {} notation as well because we are comparing it with the table columns
 [{country: country},                                {user_id: userId}]
 update country column with country                  where user_id (from db) is equal to our var userId
+
 
 */
 
