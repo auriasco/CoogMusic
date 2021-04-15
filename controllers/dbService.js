@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE,
-    port: process.env.DATABASE_DB_PORT
+    port: process.env.DATABASE_PORT 
 });
 
 connection.connect((err) => {
@@ -19,21 +19,20 @@ connection.connect((err) => {
 });
 
 class DbService {
+
     static getDbServiceInstance() {
         return instance ? instance : new DbService();
     }
 
-    async getArtistData() {
+    async getNotifications() {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM Artist;";
-
+                const query = "SELECT * FROM Notification;";
                 connection.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
                 })
             });
-            //console.log(response);
             return response;
         } catch (error) {
             console.log(error);

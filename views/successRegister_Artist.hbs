@@ -17,37 +17,13 @@
         </h4>
             <ul>
                 
-                <!-- <action="/user_index" method="POST" name={{message}}>Home </li> -->
-                
                 <li> <a href="/artist_index">Home</a>  </li>
                 <li> <a href="/viewMusicArtist">View Music</a>  </li>
                 <li> <a href="/viewArtists">View Artists</a>  </li>
                 <li> <a href="/createPlaylist">Create Playlist </a>  </li>
                 <li> <a href="/artistProfile">Artist Profile </a>  </li>
-                <li> <form action="/editProfile" method="POST"> 
-                    <input style="display:none;" type="text" name="displayName" value={{displayName}}>
-                    <input style="display:none;" type="text" name="DOB" value={{DOB}}>
-                    <input style="display:none;" type="text" name="country" value={{country}}>
-                    <input style="display:none;" type="text" name="email" value={{email}}>
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Edit Settings</button> 
-                    
-                    <!--
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Edit Profile</button> 
-                    <button style="display:none;" type="text" name="displayName" value={{displayName}}>test</button>
-                    <button style="display:none;" type="text" name="DOB" value={{DOB}}>test2</button>
-                    <button style="display:none;" type="text" name="country" value={{country}}>test3</button>
-                    <button style="display:none;" type="text" name="email" value={{email}}>test4</button>
-
-
-                    <button type="button" name="displayName" value={{displayName}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="DOB" value={{DOB}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="country" value={{country}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="email" value={{email}} style="display:none;" display="none" visibility="hidden"></button> 
-                    -->
-                </form>  
-                </li>
-                <!-- <li> <a href="/editProfile">Edit Profile</a>  </li> -->
-                <li> <a href="/">Sign Out</a></li>
+                <li> <a href="/editArtistProfile">Edit Settings</a>  </li>
+                <li> <a href="/auth/logout">Sign Out</a></li>
 
             </ul>
         
@@ -56,10 +32,10 @@
     <div class="container mt-4"> 
         <div class="jumbotron">
         <h1 class="display-4">Successful registration!</h1>
-        <p class="lead">Welcome to CoogMusic, {{name}}!</p>
+        <p class="lead">Welcome to CoogMusic, {{acc.artist_name_display}} (@{{acc.artist_name}})!</p>
         <hr class="my-4">
         <h1><b>Next steps: </b></h1>
-        <br> 1) Edit your settings information if needed - You can edit your display name (not your unique username), country, date of birth, email, and passwords
+        <br> 1) Edit your settings information if needed - You can edit your display name (not your unique username), country, date of birth, email, password, biography, and social media links
         <br> 2) View all music on the platform
         <br> 3) View all artists on the platform
         <br> 4) Create or view your artist profile - Include a description,  website links, etc. to help people learn more about you! 
