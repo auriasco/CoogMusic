@@ -16,7 +16,7 @@ const db = new mysql({
 });
 
 
-exports.upload = function(req, res){
+exports.Upload = function(req, res){
     message = '';
     if(req.method == "POST"){
         var post  = req.body;
@@ -24,7 +24,6 @@ exports.upload = function(req, res){
         var artist_Name= post.artistName;
         var album_Name= post.albumName;
         var release_Date= post.releaseDate;
-        var songId = post.songId;
 
     if(req.method == "POST"){
         if (!req.files)
@@ -34,37 +33,38 @@ exports.upload = function(req, res){
         var img_name = file_Img.name;
         var file_Audio = post.fileAudio;
         var audio_name = file_Audio.name;
-        file_Audio.mv()
 
-        if(file_Img.mimetype == "image/jpeg" ||file_Img.mimetype == "image/png" ){
+        if(file_Img.mimetype == "image/jpeg" ||file_Img.mimetype == "image/png"||file_Img.mimetype == "image/gif" ){
                                     
             file_Img.mv('public/song_images/'+file_Img.name, function(err) {
                                 
                 if (err)
                     return res.status(500).send(err);
-                var sql = "INSERT INTO `Song`(`song_name`,`song_id`, artist_name`,`album_name`,`release_date`, `song_img`) VALUES ('" + song_Name + "','" + songId + "','" + artist_Name + "','" + album_Name + "','" + release_Date + "','" + img_name + "')";
+                var sql = "INSERT INTO `Song`(`song_name`,`artist_name`,`album_name`,`release_date`, `song_img_path`) VALUES ('" + song_Name + "','" + artist_Name + "','" + album_Name + "','" + release_Date + "','" + img_name + "')";
     
-                var query = db.query(sql);
+                var query = db.query(sql, function(err, result) {
+                res.redirect('profile/'+result.insertId);
+                    });
             });
 
             file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
                 if(err)
                     return res.status(500).send(err);
                 
-                var sql = "INSERT INTO `Song`(`song_audio`) VALUES ('" + audio_name + "')";
-                var query = db.query(sql)
+                var sql = "INSERT INTO `Song`(`song_mp3_path`"
             });
 
 
         } 
         else{
             message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
-            res.render('uploadMusic.hbs',{message: message});
+            res.render('index.ejs',{message: message});
         }
     }   
     else{
-        return res.render('uploadMusic');
+        res.render('index');
     }
     
     }
+
 };

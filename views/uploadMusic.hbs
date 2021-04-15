@@ -32,10 +32,8 @@
                 <li><form action="/uploadMusic" method="POST"> 
                     <input style="display:none;" type="text" name="songName" value={{songName}}>
                     <input style="display:none;" type="text" name="artisName" value={{artisName}}>
-                    <input style="display:none;" type="text" name="albumName" value={{albumName}}>
                     <input style="display:none;" type="text" name="songImg" value={{songImg}}>
                     <input style="display:none;" type="text" name="songMP3" value={{songMP3}}>
-                    <input style="display:none;" type="text" name="releaseDate" value={{releaseDate}}>
                     <button class="btn-link" type="text" name="songId" value={{songId}}>Upload Music</button> 
                     
                 </form>  
@@ -48,44 +46,48 @@
 
     <div class="container mt-4"> 
 
-        <form action="/auth/upload" method="POST" enctype="multipart/form-data" role="form">
+        <form action="/auth/updateUserProfile" method="POST">
 
         <div class="form-group" style="padding-top: 25px;">
-            <label for="songName">Song Name </label>
-            <input type="text" class="form-control" id="songName" name="songName" placeholder={{songName}}>
-        </div>
-
-        <div class="form-group" style="padding-top: 25px;">
-            <label for="albumName" class="col-2 col-form-label">Album Name</label>
-            <input class="form-control" type="text" id="albumName" name="albumName">
-        </div>
-
-        <div class="form-group" style="padding-top: 25px;">
-            <label for="releaseDate" class="col-2 col-form-label">Release Date</label>
-            <input class="form-control" type="date" id="releaseDate" name="releaseDate">
+            <label for="name">Song Name </label>
+            <input type="text" class="form-control" id="name" name="name" placeholder={{displayName}}>
         </div>
     
         <div class="form-group" style="padding-top: 25px;">
-            <label for="artistName">Artist Name</label>
-            <input type="text" class="form-control" id="artistName" name="artistName" placeholder={{artistName}} >
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder={{email}} >
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
 
         <div class="form-group" style="padding-top: 25px;">
-            <label for="songMP3" class="col-2 col-form-label">Audio</label>
-            <input class="form-control" type="file" id="songMP3" name="songMP3" accept=""/>
+            <label for="DOB" class="col-2 col-form-label">Date of birth</label>
+            <input class="form-control" type="date" value={{DOB}} id="DOB" name="DOB">
         </div>
 
         <div class="form-group" style="padding-top: 25px;">
-            <label for="songImgy">Image</label>
-            <input class="form-control" type = "file" id="songImg" name="songImg" accept=""/>
+            <label for="country">Country</label>
+            <select class="form-control" id="country" name="country" placeholder={{country}}>
+            <option value={{country}}>(Current) {{country}}</option>
+            <option>Canada</option>
+            <option>Greenland</option>
+            <option>Mexico</option>
+            <option>USA</option>
+            </select>
         </div>
 
-        <br>
-        <input style="display:none;" type="text" name="songId" value={{songId}}>
+        <div class="form-group"style="padding-top: 25px;" >
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+        </div>
 
-        <br>
+        <div class="form-group"style="padding-top: 25px; padding-bottom: 25px" >
+            <label for="password2">Confirm Password</label>
+            <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
+        </div>
 
-        <button type="submit" class="btn btn-primary">Upload</button>
+        <input style="display:none;" type="text" name="userId" value={{userId}}>
+
+        <button type="submit" class="btn btn-primary">update</button>
 
     </form>
     {{#if message}}
