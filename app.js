@@ -6,7 +6,6 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-
 const exphbs = require('express-handlebars');
 
 //start server
@@ -47,14 +46,6 @@ app.engine('hbs', exphbs({
   }));
 app.set('view engine', 'hbs'); //template HTML
 
-
-db.connect((er) =>{
-    if(er){
-        console.log(er);
-    }else{
-        console.log('DB connected');
-    }
-});
 
 app.use(cookieParser('secret'));
 app.use(session({
