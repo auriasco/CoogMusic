@@ -138,16 +138,16 @@ router.get('/viewMusicArtist', (req, res) =>{
 });
 
 //Upload Music
-router.post('/uploadMusic', (req, res) =>{
+router.post('uploadMusic', (req, res) =>{
     console.log('POST');
-    const songInfo = {songId: req.body.idNum, songName: req.body.songName, albumName: req.body.albumName, releaseDate: req.body.releaseDate, songImg: req.body.songImg, songMP3: req.body.songMP3, artistName: req.body.artistName};
+    const songInfo = {songId: req.body.idNum, songName: req.body.songName, songImg: req.body.songImg, songMP3: req.body.songMP3, artistName: req.body.artistName};
     res.render('uploadMusic', songInfo);
     console.log(songInfo);
 });
 
 router.get('/uploadMusic', (req, res) =>{
     console.log('Get');
-    const songInfo = {songId: req.flash('songID'), songName: req.flash('songName'), albumName: req.flash('albumName'), releaseDate: req.flash('releaseDate'), songImg: req.flash('songImg'), songMP3: req.flash('songMP3'), artistName: req.flash('artistName')};
+    const songInfo = {songId: req.flash('songID'), songName: req.flash('songName'), songImg: req.flash('songImg'), songMP3: req.flash('songMP3'), artistName: req.flash('artistName')};
     console.log(songInfo);
     res.render('uploadMusic', songInfo);
 });

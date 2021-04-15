@@ -13,7 +13,6 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "busboy": "^0.3.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -28,11 +27,9 @@
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
     "q": "^1.5.1",
-    "req-flash": "0.0.3",
     "sync": "^0.2.5",
     "sync-mysql": "^3.0.1",
     "sync-sql": "^1.0.2",
-    "then-busboy": "^5.0.0-beta.3",
     "uuid": "^8.3.2"
   }
 }
