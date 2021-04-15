@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const http = require('http');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const flash = require('connect-flash');
@@ -9,6 +10,8 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const { connect } = require('./routes/pages');
 const Connection = require('sync-mysql');
+const busyboy = require("then-busboy");
+
 
 //start server
 const app  = express();
@@ -39,9 +42,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'hbs'); //template HTML
-
+app.set('views', __dirname + '/views');
 app.use(fileUpload());
-global.db = Connection;
+
+global.db = db;
 
 db.connect((er) =>{
     if(er){
@@ -59,7 +63,6 @@ app.use(flash());
 //Routes
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
-// app.use('/musicPlayer', require('./public/musicPlayer'));
 
 app.listen(5000, ()=>{
     console.log("Server started");
