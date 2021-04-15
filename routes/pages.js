@@ -1,5 +1,6 @@
 const express = require('express');
 const router  = express.Router();
+const dbService = require('../controllers/dbService');
 
 //Homepage
 router.get('/', (req,res)=>{
@@ -17,6 +18,15 @@ router.get('/login', (req,res)=>{
 });
 
 //User Page
+router.get('/getNotifications', (request, response) => {
+    const db = dbService.getDbServiceInstance();
+    const result = db.getNotifications();
+    console.log(result);
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+})
+
 router.get('/successRegister_User', (req, res)=>{
     //name = username, userName = display name 
     //console.log(req.body);

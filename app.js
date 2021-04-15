@@ -14,15 +14,6 @@ dotenv.config({
     path: './.env'
 });
 
-//database
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE,
-    port: process.env.DATABASE_PORT 
-});
-
 const publicDirectory = path.join(__dirname, './public');
 app.use(express.static(publicDirectory));
 
@@ -37,19 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'hbs'); //template HTML
 
-db.connect((er) =>{
-    if(er){
-        console.log(er);
-    }else{
-        console.log('DB connected');
-    }
-});
-
 app.use(cookieParser('keyboard cat'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
-
-  
 
 //Routes
 app.use('/', require('./routes/pages'));

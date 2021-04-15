@@ -7,7 +7,7 @@ const e = require('express');
 
 
 //database
-const db = new mysql({
+/*const db = new mysql({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
@@ -24,7 +24,7 @@ const db2 = mysqladd.createConnection({
 });
 
 
-/*
+
 async function userExistsCheck(tableUserVar, tableName, testVal){
     try{
         db.promise().query(`SELECT ${tableUserVar} FROM ${tableName} WHERE ${tableUserVar} = ?`, [testVal],(err, results)=>{
