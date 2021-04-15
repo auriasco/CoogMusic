@@ -23,29 +23,9 @@
                 <li> <a href="/viewMusicUser">View Music</a>  </li>
                 <li> <a href="/viewArtists">View Artists</a>  </li>
                 <li> <a href="/createPlaylist">Create Playlist </a>  </li>
-                <li> <form action="/editProfile" method="POST"> 
-                    <input style="display:none;" type="text" name="displayName" value={{displayName}}>
-                    <input style="display:none;" type="text" name="DOB" value={{DOB}}>
-                    <input style="display:none;" type="text" name="country" value={{country}}>
-                    <input style="display:none;" type="text" name="email" value={{email}}>
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Edit Settings</button> 
-                    
-                    <!--
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Edit Profile</button> 
-                    <button style="display:none;" type="text" name="displayName" value={{displayName}}>test</button>
-                    <button style="display:none;" type="text" name="DOB" value={{DOB}}>test2</button>
-                    <button style="display:none;" type="text" name="country" value={{country}}>test3</button>
-                    <button style="display:none;" type="text" name="email" value={{email}}>test4</button>
-
-
-                    <button type="button" name="displayName" value={{displayName}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="DOB" value={{DOB}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="country" value={{country}} style="display:none;"display="none" visibility="hidden"></button> 
-                    <button type="button" name="email" value={{email}} style="display:none;" display="none" visibility="hidden"></button> 
-                    -->
-                </form>  
-                </li>
-                <li> <a href="/">Sign Out</a></li>
+                <li> <a href="/editProfile">Edit Settings </a>  </li>
+                <!-- <li> <a href="/editProfile">Edit Profile</a>  </li> -->
+                <li> <a href="/auth/logout">Sign Out</a></li>
 
             </ul>
         
@@ -54,7 +34,7 @@
     <div class="container mt-4"> 
         <div class="jumbotron">
         <h1 class="display-4">Successful registration!</h1>
-        <p class="lead">Welcome to CoogMusic, {{name}}!</p>
+        <p class="lead">Welcome to CoogMusic, {{acc.user_name}}!</p>
         <hr class="my-4">
         <h1><b>Next steps: </b></h1>
         <br> 1) Edit your settings information if needed - You can edit your display name (not your unique username), country, date of birth, email, and passwords

@@ -12,27 +12,13 @@
 </head>
 <body>
 
-<nav>
+    <nav>
         <h4> CoogMusic
         </h4>
             <ul>
-                
-                <!-- <action="/user_index" method="POST" name={{message}}>Home </li> -->
-                
                 <li> <a href="/artist_index">Home</a>  </li>
                 <li> <a href="/viewMusicArtist">View Music</a>  </li>
                 <li> <a href="/viewArtists">View Artists</a>  </li>
-                <li> <a href="/createPlaylist">Create Playlist </a>  </li>
-                <!--<li> <a href="/artistProfile">Artist Profile </a>  </li> -->
-                <li> <form action="/editProfileArtist" method="POST"> 
-                    <input style="display:none;" type="text" name="displayName" value={{displayName}}>
-                    <input style="display:none;" type="text" name="DOB" value={{DOB}}>
-                    <input style="display:none;" type="text" name="country" value={{country}}>
-                    <input style="display:none;" type="text" name="email" value={{email}}>
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Artist Profile</button> 
-                    
-                </form>  
-                </li>
                 
                 <li><form action="/uploadMusic" method="POST"> 
                     <input style="display:none;" type="text" name="songName" value={{songName}}>
@@ -43,9 +29,11 @@
                     <input style="display:none;" type="text" name="releaseDate" value={{releaseDate}}>
                     <button class="btn-link" type="text" name="songId" value={{songId}}>Upload Music</button> 
                     
-                </form>  
+                    </form>  
                 </li>
-                <li> <a href="/">Sign Out</a></li>
+
+                <li> <a href="/editArtistProfile">Edit Settings</a>  </li>
+                <li> <a href="/auth/logout">Sign Out</a></li>
 
             </ul>
         
@@ -53,7 +41,7 @@
 
     <div class="container mt-4"> 
         <div class="jumbotron">
-        <h1 class="display-4">Welcome to your dashboard {{userName}}</h1>
+        <h1 class="display-4">Welcome to your dashboard, {{acc.artist_name_display}} (@{{acc.artist_name}})</h1>
         <p class="lead">Keep up to date with all your followed musicians and your music stats</p>
         <hr class="my-4">
         <p>Put notifications here - TBD</p>
