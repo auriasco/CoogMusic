@@ -19,17 +19,22 @@
                 <li> <a href="/artist_index">Home</a>  </li>
                 <li> <a href="/viewMusicArtist">View Music</a>  </li>
                 <li> <a href="/viewArtists">View Artists</a>  </li>
-                <li>
-                    <form action="/uploadMusic" method="POST"> 
-                        <input style="display:none;" type="text" name="songName" value={{songName}}>
-                        <input style="display:none;" type="text" name="artisName" value={{artisName}}>
-                        <input style="display:none;" type="text" name="songImg" value={{songImg}}>
-                        <input style="display:none;" type="text" name="songMP3" value={{songMP3}}>
-                        <button class="btn-link" type="text" name="idNum" value={{idNum}}>Upload Music</button> 
+                
+                <li><form action="/uploadMusic" method="POST"> 
+                    <input style="display:none;" type="text" name="songName" value={{songName}}>
+                    <input style="display:none;" type="text" name="artisName" value={{artisName}}>
+                    <input style="display:none;" type="text" name="albumName" value={{albumName}}>
+                    <input style="display:none;" type="text" name="songImg" value={{songImg}}>
+                    <input style="display:none;" type="text" name="songMP3" value={{songMP3}}>
+                    <input style="display:none;" type="text" name="releaseDate" value={{releaseDate}}>
+                    <button class="btn-link" type="text" name="songId" value={{songId}}>Upload Music</button> 
+                    
                     </form>  
                 </li>
+
                 <li> <a href="/editArtistProfile">Edit Settings</a>  </li>
                 <li> <a href="/auth/logout">Sign Out</a></li>
+
             </ul>
         
     </nav>
