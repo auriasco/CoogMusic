@@ -161,3 +161,7 @@ h5 {
     color: #911326;
     text-decoration: none;
 }
+
+div.musicianDrop{
+    display: none;
+}
