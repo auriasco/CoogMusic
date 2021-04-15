@@ -7,6 +7,13 @@ const { async } = require('q');
 const { promisify } = require ('util');
 //const flash = require('connect-flash');
 
+/* Middleware functions included:
+exports.viewUsers
+exports.viewArtists
+
+*/
+
+
 
 //database
 const db = new mysql({
@@ -25,17 +32,26 @@ const db2 = mysqladd.createConnection({
     port: process.env.DATABASE_PORT 
 });
 
+///////////////////// SELECT ALL ARTISTS AND USERS /////////////////////
+
 exports.viewUsers = (req, res)=>{
 
+    //Selects literally every user in the User table
     let users = db.query(`SELECT * FROM User`);
-    //console.log(users);
+
+    //recall how to send data through redirects, we need to use flash
+    //check routes pages to see how data is collected
+    //Sending back {data: users} where data is just the name and where users is all the users data 
+    //in the User table
     req.flash('data', users);
     return res.redirect('/viewUsers');
 }
 
 exports.viewArtists = (req, res)=>{
-
+    //same as aboev, but selects every Artist
     let artists = db.query(`SELECT * FROM Artist`);
     req.flash('data', artists);
     return res.redirect('/viewArtistsAdmin');
 }
+
+/////////---------------------------------------------------------/////
