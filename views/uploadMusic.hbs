@@ -16,8 +16,6 @@
         <h4> CoogMusic
         </h4>
             <ul>
-                
-                <!-- <action="/user_index" method="POST" name={{message}}>Home </li> -->
                 <li> <a href="/artist_index">Home</a>  </li>
                 <li> <a href="/viewMusicArtist">View Music</a>  </li>
                 <li> <a href="/viewArtists">View Artists</a>  </li>
@@ -31,7 +29,15 @@
                     
                 </form>  
                 </li>
-                <li> <a href="/uploadMusic">Upload Music </a>  </li>
+                <li><form action="/uploadMusic" method="POST"> 
+                    <input style="display:none;" type="text" name="songName" value={{songName}}>
+                    <input style="display:none;" type="text" name="artisName" value={{artisName}}>
+                    <input style="display:none;" type="text" name="songImg" value={{songImg}}>
+                    <input style="display:none;" type="text" name="songMP3" value={{songMP3}}>
+                    <button class="btn-link" type="text" name="songId" value={{songId}}>Upload Music</button> 
+                    
+                </form>  
+                </li>
                 <li> <a href="/">Sign Out</a></li>
 
             </ul>

@@ -22,7 +22,15 @@
                 <li> <a href="/viewMusicArtist">View Music</a>  </li>
                 <li> <a href="/viewArtists">View Artists</a>  </li>
                 <li> <a href="/createPlaylist">Create Playlist </a>  </li>
-                <li> <a href="/editProfileArtist">Artist Profile</a>  </li>
+                <li> <form action="/editProfileArtist" method="POST"> 
+                    <input style="display:none;" type="text" name="displayName" value={{displayName}}>
+                    <input style="display:none;" type="text" name="DOB" value={{DOB}}>
+                    <input style="display:none;" type="text" name="country" value={{country}}>
+                    <input style="display:none;" type="text" name="email" value={{email}}>
+                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Artist Profile</button> 
+                    
+                </form>  
+                </li>
                 <li> <a href="/uploadMusic">Upload Music </a>  </li>
                 
                 <li> <a href="/">Sign Out</a></li>
