@@ -45,5 +45,8 @@ nav li a:hover{
 .btn-link:hover{
     color: black;
     text-decoration: none;
+}
 
+div.musicianDrop{
+    display: none;
 }
