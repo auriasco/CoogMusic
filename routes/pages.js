@@ -1,5 +1,6 @@
 const express = require('express');
 const router  = express.Router();
+const authController = require('../controllers/auth');
 
 //Homepage
 router.get('/', (req,res)=>{
@@ -16,97 +17,106 @@ router.get('/login', (req,res)=>{
     res.render('login');
 });
 
-//User Page
-router.get('/successRegister_User', (req, res)=>{
-    //name = username, userName = display name 
-    //console.log(req.body);
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), DOB: req.flash('Birth'), country: req.flash('Country'), email: req.flash('email') };
-    //console.log('tee');
-    console.log(test);
-    res.render('successRegister_User', test);
-});
-
-router.get('/successRegister_Artist', (req, res)=>{
-    //name = username, userName = display name 
-    //console.log(req.body);
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), DOB: req.flash('Birth'), country: req.flash('Country'), email: req.flash('email') };
-    //console.log('tee');
-    console.log(test);
-    res.render('successRegister_Artist', test);
-});
-
-router.post('/editProfile', (req,res)=>{
-    console.log('POSTGTTT');
-    let userInfo = {userId: req.body.idNum, displayName: req.body.displayName, DOB: req.body.DOB, country: req.body.country, email: req.body.email};
-
-    /*
-    if(Object.keys(req.flash()).length != 0){
-        console.log('KEEEE');
-        userInfo.DOB = req.flash('DOB');
-        userInfo.userId = req.flash('userId');
-        userInfo.country = req.flash('country');
-
-        if(Object.keys(req.flash('email')).length != 0){
-            userInfo.email = req.flash('email');
-        }
-
-        if(Object.keys(req.flash('displayName')).length != 0){
-            userInfo.displayName = req.flash('displayName');
-        }
-        //add message
-    }*/
-    res.render('editProfile', userInfo);
-    console.log(userInfo);
-});
-
-router.get('/editProfile', (req,res)=>{
-    console.log('GETTTTTT');
-    const userInfo = {userId: req.flash('userId'), displayName: req.flash('displayName'), DOB: req.flash('DOB'), country: req.flash('country'), email: req.flash('email')};
-    console.log(userInfo);
-    res.render('editProfile', userInfo);
-});
 
 /*
-router.post('/user_index', (req,res)=>{
-    console.log('POST');
-    res.render('user_index', {userName: req.get()});
-})
+USE OF COOKIES: authController.getAccount = the middleware function to  get the cookies
+the getAccount exported function in the auth.js file in the CONTROLLERS folder.
+
+how it works: if user/artist clicks on the edit profile button for example,
+will first go to the middleware function that gets the cookies from the browser.
+(whenever you login or register, a cookie will be registered automatically)
+This cookie is called req.acc
+req.acc will contain the identifying info of the user or artist's id and ttheir type (user or artist)
+Useful because since we now have their id, we can access their stuff in the database/
+req.acc will give us everything in the arttist or user table associated with that id.
+Ex- req.acc (we are looking at artists) will give us all their info from the table
+such as their display name, username, social media links, etc.
+
 */
 
-router.get('/viewUsers', (req, res)=>{
-    //console.log(req.flash('data'));
-    console.log('we in here');
-    res.render('viewUsers',{userData: req.flash('data')});
-    //req.flash('welcomeName',messages);
-    //res.render('user_index',{messages: req.flash('welcomeName')});
+//////////////// ARTIST PAGE ////////////////
+router.get('/editArtistProfile', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        //get the cookie info and store it in a variable named acc.
+        //Then in the hbs files, we can get the info using {{acc.artist_name}}, etc.
+        //error and success are flashes sent by the edit artist profile function in the auth.js file in
+        //the CONTROLLERS folder. Error = passwords dont match, etc. 
+        //It gets put in here as well because when you press submit (to  edit your info),
+        //it goes to /auth/editArtistProfile => redirects back to /editArtistProfile when
+        //finished updating or it catches an error
+
+        res.render('editArtistProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});
+    }else{
+        res.redirect('/login');
+    }
 });
 
+router.get('/successRegister_Artist', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('successRegister_Artist', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+
+router.get('/artist_index', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('artist_index', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+////////////////////////////////////////////////
+
+
+//////////////// USER PAGE ////////////////////////////////
+
+router.get('/successRegister_User', authController.getAccount, (req, res)=>{
+
+    if(req.acc){
+        res.render('successRegister_User', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
+
+});
+
+router.get('/user_index', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('user_index', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/editProfile', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('editProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+
+////////////////////////////////////////////////
+
+//////////////// ADMIN PAGE ////////////////////////////////
+router.get('/viewUsers', (req, res)=>{
+    res.render('viewUsers',{userData: req.flash('data')});
+});
+
+router.get('/viewArtistsAdmin', (req, res)=>{
+    res.render('viewArtistsAdmin',{artistData: req.flash('data')});
+});
 
 router.get('/admin_index', (req, res)=>{
-    console.log('GET');
     res.render('admin_index');
-    //req.flash('welcomeName',messages);
-    //res.render('user_index',{messages: req.flash('welcomeName')});
 });
 
-router.get('/artist_index', (req, res)=>{
-    console.log('GET');
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), country: req.flash('Country'), email: req.flash('email') };
-    res.render('artist_index', test);
-    //req.flash('welcomeName',messages);
-    //res.render('user_index',{messages: req.flash('welcomeName')});
-});
+////////////////////////////////////////////////
 
-router.get('/user_index', (req, res)=>{
-    console.log('GET');
-    const test = {name: req.flash('welcomeName'), idUser: req.flash('userId'), displayName: req.flash('userName'), country: req.flash('Country'), email: req.flash('email') };
-    res.render('user_index', test);
-    //req.flash('welcomeName',messages);
-    //res.render('user_index',{messages: req.flash('welcomeName')});
-});
-
-
-//Musician Page
 
 
 module.exports = router;
