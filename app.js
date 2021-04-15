@@ -6,6 +6,9 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const { connect } = require('./routes/pages');
+const Connection = require('sync-mysql');
 
 //start server
 const app  = express();
@@ -37,6 +40,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'hbs'); //template HTML
 
+app.use(fileUpload());
+global.db = Connection;
+
 db.connect((er) =>{
     if(er){
         console.log(er);
@@ -48,12 +54,12 @@ db.connect((er) =>{
 app.use(cookieParser('keyboard cat'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
-
   
 
 //Routes
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
+// app.use('/musicPlayer', require('./public/musicPlayer'));
 
 app.listen(5000, ()=>{
     console.log("Server started");

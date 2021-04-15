@@ -105,8 +105,52 @@ router.get('/user_index', (req, res)=>{
     //res.render('user_index',{messages: req.flash('welcomeName')});
 });
 
+//User Music Page
+router.get('/viewMusicUser', (req, res) =>{
+    console.log('Get');
+    res.render('viewMusicUser');
+});
 
-//Musician Page
+//Artist Music Page
+router.get('/viewMusicArtist', (req, res) =>{
+    console.log('Get');
+    res.render('viewMusicArtist');
+});
+
+
+//Edit Artist Profile route
+router.post('/editProfileArtist', (req,res)=>{
+    console.log('POSTGTTT');
+    let userInfo = {userId: req.body.idNum, displayName: req.body.displayName, DOB: req.body.DOB, country: req.body.country, email: req.body.email};
+    res.render('editProfileArtist', userInfo);
+    console.log(userInfo);
+});
+
+
+
+
+router.get('/editProfileArtsit', (req, res) => {
+    console.log('Get');
+    const userInfo = {userId: req.flash('userId'), displayName: req.flash('displayName'), DOB: req.flash('DOB'), country: req.flash('country'), email: req.flash('email')};
+    console.log(userInfo);
+    res.render('editProfileArtist', userInfo);
+});
+
+
+//Upload Music
+router.post('uploadMusic', (req, res) =>{
+    console.log('POST');
+    const songInfo = {songId: req.body.idNum, songName: req.body.songName, songImg: req.body.songImg, songMP3: req.body.songMP3, artistName: req.body.artistName};
+    res.render('uploadMusic', songInfo);
+    console.log(songInfo);
+});
+
+router.get('/uploadMusic', (req, res) =>{
+    console.log('Get');
+    const songInfo = {songId: req.flash('songID'), songName: req.flash('songName'), songImg: req.flash('songImg'), songMP3: req.flash('songMP3'), artistName: req.flash('artistName')};
+    console.log(songInfo);
+    res.render('uploadMusic', songInfo);
+});
 
 
 module.exports = router;
