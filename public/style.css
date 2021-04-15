@@ -162,6 +162,56 @@ h5 {
     text-decoration: none;
 }
 
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.main{
+    position: relative;
+    height: 80%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main button{
+padding: 10px 12px;
+margin: 0 10px;
+}
+.main #logo{
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    font-size: 25px;
+    color: #ccc;
+}
+.main #logo i{
+    margin-right: 15px;
+}
+
+/* left & right part */
+.right,.left{
+    position: relative;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* song image */
+.left img{
+    height: 300px;
+    width: 80%;
+    border-radius: 15px;
+    box-shadow: 1px 0px 20px 12px rgba(240,240,240,0.2);
+}
+
+
 div.musicianDrop{
     display: none;
 }
+

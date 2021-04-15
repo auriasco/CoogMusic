@@ -6,6 +6,9 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const { connect } = require('./routes/pages');
+const Connection = require('sync-mysql');
 
 const exphbs = require('express-handlebars');
 
@@ -37,6 +40,10 @@ app.engine('hbs', exphbs({
     helpers: require('./hbsHelpers/handlebars-helpers.js') //only need this
   }));
 app.set('view engine', 'hbs'); //template HTML
+
+
+app.use(fileUpload());
+global.db = Connection;
 
 app.use(cookieParser('secret'));
 app.use(session({

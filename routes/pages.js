@@ -125,8 +125,33 @@ router.get('/admin_index', (req, res)=>{
     res.render('admin_index');
 });
 
+//User Music Page
+router.get('/viewMusicUser', (req, res) =>{
+    console.log('Get');
+    res.render('viewMusicUser');
+});
+
+//Artist Music Page
+router.get('/viewMusicArtist', (req, res) =>{
+    console.log('Get');
+    res.render('viewMusicArtist');
+});
+
+//Upload Music
+router.post('uploadMusic', (req, res) =>{
+    console.log('POST');
+    const songInfo = {songId: req.body.idNum, songName: req.body.songName, songImg: req.body.songImg, songMP3: req.body.songMP3, artistName: req.body.artistName};
+    res.render('uploadMusic', songInfo);
+    console.log(songInfo);
+});
+
+router.get('/uploadMusic', (req, res) =>{
+    console.log('Get');
+    const songInfo = {songId: req.flash('songID'), songName: req.flash('songName'), songImg: req.flash('songImg'), songMP3: req.flash('songMP3'), artistName: req.flash('artistName')};
+    console.log(songInfo);
+    res.render('uploadMusic', songInfo);
+});
+
 ////////////////////////////////////////////////
-
-
 
 module.exports = router;
