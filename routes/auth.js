@@ -27,7 +27,7 @@ router.get('/viewArtistsAdmin', adminController.viewArtists);
 
 //artists
 router.post('/upload', fileUploadcontroller.upload);
-
+router.post('/delete', fileUploadcontroller.delete);
 
 
 
