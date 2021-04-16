@@ -27,5 +27,18 @@ module.exports = {
     ifnoteq: function(a, b, options){
         if (a != b) { return options.fn(this); }
         return options.inverse(this);
+    },
+
+    eachRow: function(items, numColumns, options){
+      var result = '';
+
+      for(var i = 0; i < items.length; i+= numColumns){
+        result += options.fn({
+          columns: items.slice(i, i+numColumns)
+        });
+      }
+
+      return result;
+
     }
   }

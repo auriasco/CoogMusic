@@ -3,6 +3,25 @@ const router  = express.Router();
 const dbService = require('../controllers/dbService');
 const authController = require('../controllers/auth');
 
+const mysql = require('sync-mysql');
+/* Middleware functions included:
+exports.viewUsers
+exports.viewArtists
+
+*/
+
+
+
+//database
+const db = new mysql({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.DATABASE_PORT 
+});
+
+
 //Homepage
 router.get('/', (req,res)=>{
     res.render('index');
@@ -119,6 +138,18 @@ router.get('/user_index', authController.getAccount, (req, res)=>{
     }
 });
 
+router.get('/viewArtists', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let artists = db.query(`SELECT * FROM Artist`);
+        console.log("STAART");
+        console.log(artists);
+        console.log("END");
+        res.render('viewArtists', {acc: req.acc, artistData: artists});
+    }else{
+        res.redirect('/login');
+    }
+});
+
 router.get('/editProfile', authController.getAccount, (req, res)=>{
     if(req.acc){
         res.render('editProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});
@@ -127,6 +158,31 @@ router.get('/editProfile', authController.getAccount, (req, res)=>{
     }
 });
 
+router.post('/artistProfile/:artistId', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        //get artist info
+        const artist_id = req.params.artistId;
+        let artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
+        res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0]});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+//User followed artist
+router.get('/artistProfile/:artistId', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        //get artist info
+        const artist_id = req.params.artistId;
+        let artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
+
+        const following = true;
+        res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0], following: following});
+        
+    }else{
+        res.redirect('/login');
+    }
+});
 
 ////////////////////////////////////////////////
 
