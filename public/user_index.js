@@ -4,6 +4,28 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(data => loadNotificationPane(data['data']));
 });
 
+function timeSince(date) {
+
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const then = date.split(/[-T :]/);
+    const now = new Date();
+    const utc1 = Date.UTC(then[0], then[1]-1, then[2]);
+    const utc2 = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    const day_diff = Math.floor((utc2 - utc1) / _MS_PER_DAY);
+
+    if (day_diff >= 365) {
+        return Math.floor(day_diff / 365).toString() + "y";
+    } else if (day_diff >= 30) {
+        return Math.floor(day_diff / 30).toString() + "mo";
+    } else if (day_diff >= 7) {
+        return Math.floor(day_diff / 7).toString() + "w";
+    } else if (day_diff >= 1) {
+        return Math.floor(day_diff).toString() + "d";
+    } else {
+        return "1d";
+    }
+}
+
 function loadNotificationPane(data) {
     console.log(data);
     var notification_pane = document.getElementById('notification-pane');
@@ -17,7 +39,7 @@ function loadNotificationPane(data) {
         var header_left = document.createElement("h3");
         header_left.innerHTML = data[i]["header_text"];
         var header_right = document.createElement("h4");
-        header_right.innerHTML = "3d";
+        header_right.innerHTML = timeSince(data[i]["date_created"]);
         header.append(header_left);
         header.append(header_right);
 
@@ -27,10 +49,9 @@ function loadNotificationPane(data) {
         var data1 = document.createElement("div");
         data1.classList.add("notification-data1");
         var image = document.createElement("img");
-        image.setAttribute("src", "/assets/" + data[i]["song_id"] + ".png");
+        image.setAttribute("src", "/song_images/" + data[i]["song_id"] + ".png");
         image.setAttribute("width", "50px");
         image.setAttribute("height", "50px");
-        console.log(image.src);
         var data2 = document.createElement("div");
         data2.classList.add("notification-data2");
         var song_name = document.createElement("h5");
