@@ -20,25 +20,9 @@
                 <li> <a href="/viewMusicArtist">View Music</a>  </li>
                 <li> <a href="/viewArtists">View Artists</a>  </li>
                 <li> <a href="/createPlaylist">Create Playlist </a>  </li>
-                <li> <form action="/editProfileArtist" method="POST"> 
-                    <input style="display:none;" type="text" name="displayName" value={{displayName}}>
-                    <input style="display:none;" type="text" name="DOB" value={{DOB}}>
-                    <input style="display:none;" type="text" name="country" value={{country}}>
-                    <input style="display:none;" type="text" name="email" value={{email}}>
-                    <button class="btn-link" type="text" name="idNum" value={{idUser}}>Artist Profile</button> 
-                    
-                </form>  
-                </li>
-                <li><form action="/uploadMusic" method="POST"> 
-                    <input style="display:none;" type="text" name="songName" value={{songName}}>
-                    <input style="display:none;" type="text" name="artisName" value={{artisName}}>
-                    <input style="display:none;" type="text" name="songImg" value={{songImg}}>
-                    <input style="display:none;" type="text" name="songMP3" value={{songMP3}}>
-                    <button class="btn-link" type="text" name="songId" value={{songId}}>Upload Music</button> 
-                    
-                </form>  
-                </li>
-                <li> <a href="/">Sign Out</a></li>
+                <li> <a href="/uploadMusic">Upload Music</a>  </li>
+                <li> <a href="/editArtistProfile">Edit Settings</a>  </li>
+                <li> <a href="/auth/logout">Sign Out</a></li>
 
             </ul>
         
@@ -46,48 +30,42 @@
 
     <div class="container mt-4"> 
 
-        <form action="/auth/updateUserProfile" method="POST">
+        <form action="/auth/upload" method="POST" enctype="multipart/form-data" role="form">
 
         <div class="form-group" style="padding-top: 25px;">
-            <label for="name">Song Name </label>
-            <input type="text" class="form-control" id="name" name="name" placeholder={{displayName}}>
+            <label for="songName">Song Name </label>
+            <input type="text" class="form-control" id="songName" name="songName">
+        </div>
+
+        <div class="form-group" style="padding-top: 25px;">
+            <label for="albumName" class="col-2 col-form-label">Album Name</label>
+            <input class="form-control" type="text" id="albumName" name="albumName">
+        </div>
+
+        <div class="form-group" style="padding-top: 25px;">
+            <label for="releaseDate" class="col-2 col-form-label">Release Date</label>
+            <input class="form-control" type="date" id="releaseDate" name="releaseDate">
         </div>
     
         <div class="form-group" style="padding-top: 25px;">
-            <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder={{email}} >
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <label for="artistName">Artist Name</label>
+            <input type="text" class="form-control" id="artistName" name="artistName" placeholder="{{acc.artist_name_display}}">
         </div>
 
         <div class="form-group" style="padding-top: 25px;">
-            <label for="DOB" class="col-2 col-form-label">Date of birth</label>
-            <input class="form-control" type="date" value={{DOB}} id="DOB" name="DOB">
+            <label for="songMP3" class="col-2 col-form-label">Audio</label>
+            <input class="form-control" type="file" id="songMP3" name="songMP3" accept=""/>
         </div>
 
         <div class="form-group" style="padding-top: 25px;">
-            <label for="country">Country</label>
-            <select class="form-control" id="country" name="country" placeholder={{country}}>
-            <option value={{country}}>(Current) {{country}}</option>
-            <option>Canada</option>
-            <option>Greenland</option>
-            <option>Mexico</option>
-            <option>USA</option>
-            </select>
+            <label for="songImgy">Image</label>
+            <input class="form-control" type = "file" id="songImg" name="songImg" accept=""/>
         </div>
 
-        <div class="form-group"style="padding-top: 25px;" >
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-        </div>
+        <input style="display:none;" type="text" name="artistId" value={{acc.artist_id}}>
+        
 
-        <div class="form-group"style="padding-top: 25px; padding-bottom: 25px" >
-            <label for="password2">Confirm Password</label>
-            <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
-        </div>
-
-        <input style="display:none;" type="text" name="userId" value={{userId}}>
-
-        <button type="submit" class="btn btn-primary">update</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
 
     </form>
     {{#if message}}

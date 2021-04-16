@@ -78,6 +78,24 @@ router.get('/artist_index', authController.getAccount, (req, res)=>{
     }
 });
 
+//Artist Music Page
+router.get('/viewMusicArtist', (req, res) =>{
+    console.log('Get');
+    res.render('viewMusicArtist');
+});
+
+//Upload Music
+
+router.get('/uploadMusic', authController.getAccount, (req, res) =>{
+
+    if(req.acc){
+        res.render('uploadMusic', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+
 ////////////////////////////////////////////////
 
 
@@ -131,26 +149,6 @@ router.get('/viewMusicUser', (req, res) =>{
     res.render('viewMusicUser');
 });
 
-//Artist Music Page
-router.get('/viewMusicArtist', (req, res) =>{
-    console.log('Get');
-    res.render('viewMusicArtist');
-});
-
-//Upload Music
-router.post('uploadMusic', (req, res) =>{
-    console.log('POST');
-    const songInfo = {songId: req.body.idNum, songName: req.body.songName, songImg: req.body.songImg, songMP3: req.body.songMP3, artistName: req.body.artistName};
-    res.render('uploadMusic', songInfo);
-    console.log(songInfo);
-});
-
-router.get('/uploadMusic', (req, res) =>{
-    console.log('Get');
-    const songInfo = {songId: req.flash('songID'), songName: req.flash('songName'), songImg: req.flash('songImg'), songMP3: req.flash('songMP3'), artistName: req.flash('artistName')};
-    console.log(songInfo);
-    res.render('uploadMusic', songInfo);
-});
 
 ////////////////////////////////////////////////
 

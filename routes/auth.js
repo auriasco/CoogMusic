@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require('../controllers/auth');
 const adminController = require('../controllers/dbActions');
+const fileUploadcontroller = require('../controllers/fileUpload');
 const router = express.Router();
 
 //MIDDLEWARE  FUNCTIONS
@@ -23,6 +24,10 @@ router.get('/logout', authController.logout);
 //admin
 router.get('/viewUsers',  adminController.viewUsers);
 router.get('/viewArtistsAdmin', adminController.viewArtists);
+
+//artists
+router.post('/upload', fileUploadcontroller.upload);
+
 
 
 

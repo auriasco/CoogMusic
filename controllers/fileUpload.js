@@ -6,7 +6,7 @@ const e = require('express');
 //const flash = require('connect-flash');
 
 
-//database
+//use db for queries, don't need to update anything
 const db = new mysql({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -15,56 +15,73 @@ const db = new mysql({
     port: process.env.DATABASE_PORT 
 });
 
+//use db2 if need to update the actual database (registering account, updating info, etc.)
+const db2 = mysqladd.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.DATABASE_PORT 
+});
 
-exports.Upload = function(req, res){
-    message = '';
-    if(req.method == "POST"){
-        var post  = req.body;
-        var song_Name= post.songName;
-        var artist_Name= post.artistName;
-        var album_Name= post.albumName;
-        var release_Date= post.releaseDate;
 
-    if(req.method == "POST"){
-        if (!req.files)
-            return res.status(400).send('No files were uploaded.');
+exports.upload = function(req, res){
+    console.log("ADFAFADF");
+    var post  = req.body;
+    var song_Name= post.songName;
+    var artist_Name= post.artistName;
+    var album_Name= post.albumName;
+    var release_Date= post.releaseDate;
+    var artistId = post.artistId;
+
+    if (!req.files){
+        message = "No files were uploaded!";
+        res.render('uploadMusic.hbs',{message: message});
+    }
+
     
-        var file_Img = req.files.uploaded_image;
-        var img_name = file_Img.name;
-        var file_Audio = post.fileAudio;
-        var audio_name = file_Audio.name;
+    
+    //get file stuff
+    var file_Img = req.files.songImg;
+    var img_name = file_Img.name;
+    var file_Audio = req.files.songMP3;
+    var audio_name = file_Audio.name;
 
-        if(file_Img.mimetype == "image/jpeg" ||file_Img.mimetype == "image/png"||file_Img.mimetype == "image/gif" ){
+    var songId = uuidv4();
+
+    //testing figure out later
+    var album_idB = 0;
+    var genre_idB = 0;
+    var songDur = 9999;
+    var plays = 9999;
+    
+
+    //foreign keys = genre_idB, album_idB, 
+
+    if(file_Img.mimetype == "image/jpeg" ||file_Img.mimetype == "image/png" ){
+
                                     
-            file_Img.mv('public/song_images/'+file_Img.name, function(err) {
-                                
-                if (err)
-                    return res.status(500).send(err);
-                var sql = "INSERT INTO `Song`(`song_name`,`artist_name`,`album_name`,`release_date`, `song_img_path`) VALUES ('" + song_Name + "','" + artist_Name + "','" + album_Name + "','" + release_Date + "','" + img_name + "')";
-    
-                var query = db.query(sql, function(err, result) {
-                res.redirect('profile/'+result.insertId);
-                    });
-            });
+        file_Img.mv('public/song_images/'+file_Img.name, function(err) {
+                            
+            if (err)
+                return res.status(500).send(err);
 
-            file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
-                if(err)
-                    return res.status(500).send(err);
-                
-                var sql = "INSERT INTO `Song`(`song_mp3_path`"
-            });
+            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, album_idB: album_idB, album_name: album_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: songDur, plays: plays, song_audio_path: audio_name, song_img_path: img_name});
+   
+        });
 
+        
+        file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
+            if(err)
+                return res.status(500).send(err);
 
-        } 
-        else{
-            message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
-            res.render('index.ejs',{message: message});
-        }
-    }   
-    else{
-        res.render('index');
+            
+        });
+        
+
+    }else{
+        message = "This format is not allowed , please upload file with '.png','.jpg'";
+        res.render('uploadMusic',{message: message});
     }
     
-    }
-
 };
