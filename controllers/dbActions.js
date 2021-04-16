@@ -34,6 +34,7 @@ const db2 = mysqladd.createConnection({
 
 ///////////////////// SELECT ALL ARTISTS AND USERS /////////////////////
 
+//----------> ADMIN
 exports.viewUsers = (req, res)=>{
 
     //Selects literally every user in the User table
@@ -47,11 +48,19 @@ exports.viewUsers = (req, res)=>{
     return res.redirect('/viewUsers');
 }
 
-exports.viewArtists = (req, res)=>{
+exports.viewArtistsAdmin = (req, res)=>{
     //same as aboev, but selects every Artist
     let artists = db.query(`SELECT * FROM Artist`);
     req.flash('data', artists);
     return res.redirect('/viewArtistsAdmin');
+}
+
+//----------> USERS
+exports.viewArtists = (req, res)=>{
+    //same as aboev, but selects every Artist
+    let artists = db.query(`SELECT * FROM Artist`);
+    req.flash('data', artists);
+    return res.redirect('/viewArtists');
 }
 
 /////////---------------------------------------------------------/////
