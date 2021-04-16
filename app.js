@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const { connect } = require('./routes/pages');
 const Connection = require('sync-mysql');
+const fs = require("fs");
 
 const exphbs = require('express-handlebars');
 
@@ -30,7 +31,6 @@ app.use(express.urlencoded({extended: false}));
 //values we get from form = JSON. Parse JSON bodies (as sent by API)
 app.use(express.json());
 app.use(cookieParser());
-
 //app.use(bodyParser.urlencoded({ extended: true }));
 
 //when configuring the app view engine
@@ -40,7 +40,6 @@ app.engine('hbs', exphbs({
     helpers: require('./hbsHelpers/handlebars-helpers.js') //only need this
   }));
 app.set('view engine', 'hbs'); //template HTML
-
 
 app.use(fileUpload());
 global.db = Connection;

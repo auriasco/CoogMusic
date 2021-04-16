@@ -3,6 +3,7 @@ const mysql = require('sync-mysql');
 const mysqladd = require('mysql2');
 const { v4: uuidv4 } = require('uuid');
 const e = require('express');
+const fs = require('fs');
 //const flash = require('connect-flash');
 
 
@@ -49,24 +50,32 @@ exports.upload = function(req, res){
 
     var songId = uuidv4();
 
+    var song_audio_path = songId + "." + "mp3";
+
+    if (file_Img.mimetype == "image/jpeg"){
+        var song_img_path = songId + "." + "jpeg";
+    }
+    else{
+        var song_img_path = songId + "." + "png";
+    }
+
     //testing figure out later
     var album_idB = 0;
     var genre_idB = 0;
     var songDur = 9999;
     var plays = 9999;
-    
 
-    //foreign keys = genre_idB, album_idB, 
+    //foreign keys = genre_idB, album_idB, artist_idB
 
-    if(file_Img.mimetype == "image/jpeg" ||file_Img.mimetype == "image/png" ){
+    if(file_Img.mimetype == "image/jpeg" || file_Img.mimetype == "image/png" ){
 
                                     
-        file_Img.mv('public/song_images/'+file_Img.name, function(err) {
+        file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
                             
             if (err)
                 return res.status(500).send(err);
 
-            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, album_idB: album_idB, album_name: album_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: songDur, plays: plays, song_audio_path: audio_name, song_img_path: img_name});
+            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, album_idB: album_idB, album_name: album_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: songDur, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
    
         });
 
