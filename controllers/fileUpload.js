@@ -4,8 +4,9 @@ const mysqladd = require('mysql2');
 const { v4: uuidv4 } = require('uuid');
 const e = require('express');
 const fs = require('fs');
-//const flash = require('connect-flash');
-
+const { getAudioDurationInSeconds } = require('get-audio-duration');
+const mp3Duration = require('mp3-duration');
+const getmp3Duration = require('get-mp3-duration');
 
 //use db for queries, don't need to update anything
 const db = new mysql({
@@ -27,13 +28,13 @@ const db2 = mysqladd.createConnection({
 
 
 exports.upload = function(req, res){
-    console.log("ADFAFADF");
     var post  = req.body;
     var song_Name= post.songName;
     var artist_Name= post.artistName;
     var album_Name= post.albumName;
     var release_Date= post.releaseDate;
     var artistId = post.artistId;
+    var genre = post.genre;
 
     if (!req.files){
         message = "No files were uploaded!";
@@ -48,10 +49,18 @@ exports.upload = function(req, res){
     var file_Audio = req.files.songMP3;
     var audio_name = file_Audio.name;
 
+    //get song duration 
+    const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
+    var duration = getmp3Duration(buffer);
+    duration = duration/1000;
+    console.log(duration);
+  
+
+    // generate songId
     var songId = uuidv4();
 
+    // rename files
     var song_audio_path = songId + "." + "mp3";
-
     if (file_Img.mimetype == "image/jpeg"){
         var song_img_path = songId + "." + "jpeg";
     }
@@ -59,10 +68,24 @@ exports.upload = function(req, res){
         var song_img_path = songId + "." + "png";
     }
 
+    //get audio duration
+    // const stream = fs.createReadStream('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
+    
+    // getAudioDurationInSeconds(stream).then((duration) => {
+    //     console.log(duration);
+    // });
+
     //testing figure out later
     var album_idB = 0;
+<<<<<<< HEAD
     var genre_idB = 0;
     var songDur = 0;
+=======
+    var genre_idB = db.query(`SELECT genre_id FROM Genre WHERE genre_name = ?`, [genre]);
+    var genre_idB = genre_idB[0].genre_id;
+   // var genre_idB = 00;
+    var songDur = 9999;
+>>>>>>> bd48e68b99223b93172a92d413a71da9517cfbc6
     var plays = 0;
 
     //foreign keys = genre_idB, album_idB, artist_idB
@@ -75,7 +98,11 @@ exports.upload = function(req, res){
             if (err)
                 return res.status(500).send(err);
 
+<<<<<<< HEAD
             db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: songDur, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
+=======
+            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: duration, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
+>>>>>>> bd48e68b99223b93172a92d413a71da9517cfbc6
    
         });
 
@@ -87,10 +114,32 @@ exports.upload = function(req, res){
             
         });
         
+        return res.render('uploadMusic', {
+            message: 'Song was Uploaded'
+        })
 
     }else{
         message = "This format is not allowed , please upload file with '.png','.jpg'";
         res.render('uploadMusic',{message: message});
     }
     
+};
+
+exports.delete = (req, res) =>{
+    var post = req.body;
+    var song_name = post.songName;
+    var artist_Name= post.artistName;
+
+    db2.query(`DELETE FROM Song WHERE song_name = ? AND artist_name = ?`, [song_name, artist_Name], (err, result, field) =>{
+        if(err){
+            return res.render('register', {
+                message: 'Try again: That username is already in use by another user'
+            });
+        }
+        else{
+            return res.render('uploadMusic', {
+                message2: 'Song was Deleted'
+            })
+        }
+    });
 };

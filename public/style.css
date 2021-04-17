@@ -215,3 +215,12 @@ div.musicianDrop{
     display: none;
 }
 
+.card {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.card-text{
+    max-lines: 4;
+
+}

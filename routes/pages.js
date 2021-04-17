@@ -3,6 +3,35 @@ const router  = express.Router();
 const dbService = require('../controllers/dbService');
 const authController = require('../controllers/auth');
 
+const mysql = require('sync-mysql');
+const mysqladd = require('mysql2');
+
+/* Middleware functions included:
+exports.viewUsers
+exports.viewArtists
+
+*/
+
+
+
+//database
+const db = new mysql({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.DATABASE_PORT 
+});
+
+const db2 = mysqladd.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.DATABASE_PORT 
+});
+
+
 //Homepage
 router.get('/', (req,res)=>{
     res.render('index');
@@ -79,10 +108,10 @@ router.get('/artist_index', authController.getAccount, (req, res)=>{
 });
 
 //Artist Music Page
-router.get('/viewMusicArtist', (req, res) =>{
-    console.log('Get');
-    res.render('viewMusicArtist');
-});
+// router.get('/viewMusicArtist', (req, res) =>{
+//     console.log('Get');
+//     res.render('viewMusicArtist');
+// });
 
 //Upload Music
 
@@ -119,9 +148,73 @@ router.get('/user_index', authController.getAccount, (req, res)=>{
     }
 });
 
+router.get('/viewArtists', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let artists = db.query(`SELECT * FROM Artist`);
+        res.render('viewArtists', {acc: req.acc, artistData: artists});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/viewMusicArtist', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let songs = db.query(`SELECT * FROM Song`);
+        res.render('viewMusicArtist', {acc: req.acc, songData: songs});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/getSongs', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let songs = db.query(`SELECT * FROM Song`);
+        console.log(songs);
+    }else{
+        res.redirect('/login');
+    }
+});
+
 router.get('/editProfile', authController.getAccount, (req, res)=>{
     if(req.acc){
         res.render('editProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+//User just clicked the artist profile OR they clicked the follow or unfollow button
+router.post('/artistProfile/:artistId', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        //get artist info
+        const artist_id = req.params.artistId;
+        let artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
+        var following = false;
+
+        //Check if following
+        let checkFollowing = db.query(`SELECT idfollow FROM Follow WHERE followed_by_user_id = ? AND following_artist_id = ?`, [req.acc.user_id, artistInfo[0].artist_id]);
+        
+        if(checkFollowing.length == 1){
+            //user is following
+            following = true;
+
+            if(req.body.pressedUnfollow == ''){
+                db2.query(`DELETE FROM Follow WHERE ? AND ?`,[{followed_by_user_id: req.acc.user_id} , {following_artist_id: artistInfo[0].artist_id}]);
+
+                //need to recall a query to update follower count
+                artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
+                following = false;
+            }
+        }else if(req.body.pressedFollow == ''){
+            db2.query(`INSERT INTO Follow SET ?`, {followed_by_user_id: req.acc.user_id, following_artist_id: artistInfo[0].artist_id});
+            
+            //need to recall a query to update follower count
+            artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
+            //console.log('CLOUT COUNT: '+ artistInfo[0].followerCount);
+            following = true;
+        }
+
+        res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0], following: following});
     }else{
         res.redirect('/login');
     }
