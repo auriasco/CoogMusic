@@ -108,10 +108,10 @@ router.get('/artist_index', authController.getAccount, (req, res)=>{
 });
 
 //Artist Music Page
-router.get('/viewMusicArtist', (req, res) =>{
-    console.log('Get');
-    res.render('viewMusicArtist');
-});
+// router.get('/viewMusicArtist', (req, res) =>{
+//     console.log('Get');
+//     res.render('viewMusicArtist');
+// });
 
 //Upload Music
 
@@ -152,6 +152,15 @@ router.get('/viewArtists', authController.getAccount, (req, res)=>{
     if(req.acc){
         let artists = db.query(`SELECT * FROM Artist`);
         res.render('viewArtists', {acc: req.acc, artistData: artists});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/viewMusicArtist', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let songs = db.query(`SELECT * FROM Song`);
+        res.render('viewMusicArtist', {acc: req.acc, songData: songs});
     }else{
         res.redirect('/login');
     }

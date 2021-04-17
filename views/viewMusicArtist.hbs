@@ -208,6 +208,17 @@
         
     </nav>
 
+      {{#eachRow songData 4}}
+        {{#each columns}}
+        <li>{{this.song_name}}</li>
+        {{!-- <input style="display:none;" type="text" id = "song_name" name="song_name" value="{{this.song_name}}"> --}}
+        {{!-- <input style="display:none;" type="text" id = "artist_name" name="artist_name" value={{this.artist_name}}>
+        <input style="display:none;" type="text" id = "song_audio_path" name="song_audio_path" value={{this.song_audio_path}}>
+        <input style="display:none;" type="text" id = "song_img_path" name="song_img_path" value={{this.song_img_path}}> --}}
+        {{/each}}
+      {{/eachRow}}
+
+    {{!-- <input style="display:none;" type="data" id = "song_name" name="song_name" value="{{songData}}"> --}}
 
     <div class="main">
   	{{!-- <p id="logo"><i class="fa fa-music"></i>Music</p> --}}
@@ -286,6 +297,6 @@
 
   </div>
 
-  <script src='/musicPlayer.js'></script>
+  <script src='/musicPlayer.js' songArray = {{songData}}></script>
 </body>
 </html>
