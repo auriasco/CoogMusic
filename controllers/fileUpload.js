@@ -62,8 +62,8 @@ exports.upload = function(req, res){
     //testing figure out later
     var album_idB = 0;
     var genre_idB = 0;
-    var songDur = 9999;
-    var plays = 9999;
+    var songDur = 0;
+    var plays = 0;
 
     //foreign keys = genre_idB, album_idB, artist_idB
 
@@ -75,7 +75,7 @@ exports.upload = function(req, res){
             if (err)
                 return res.status(500).send(err);
 
-            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, album_idB: album_idB, album_name: album_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: songDur, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
+            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: songDur, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
    
         });
 
