@@ -165,7 +165,7 @@ router.get('/editProfile', authController.getAccount, (req, res)=>{
     }
 });
 
-//User just clicked the artist profile OR they want to unfollow/follow
+//User just clicked the artist profile OR they clicked the follow or unfollow button
 router.post('/artistProfile/:artistId', authController.getAccount, (req, res)=>{
     if(req.acc){
         //get artist info
