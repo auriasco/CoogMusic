@@ -166,6 +166,15 @@ router.get('/viewMusicArtist', authController.getAccount, (req, res)=>{
     }
 });
 
+router.get('/getSongs', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let songs = db.query(`SELECT * FROM Song`);
+        console.log(songs);
+    }else{
+        res.redirect('/login');
+    }
+});
+
 router.get('/editProfile', authController.getAccount, (req, res)=>{
     if(req.acc){
         res.render('editProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});

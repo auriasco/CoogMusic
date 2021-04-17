@@ -1,3 +1,9 @@
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:5000/getSongs')
+    .then(response => response.json())
+    .then(data => loadNotificationPane(data['data']));
+});
+
 let previous = document.querySelector('#pre');
 let play = document.querySelector('#play');
 let next = document.querySelector('#next');
@@ -12,10 +18,7 @@ let present = document.querySelector('#present');
 let total = document.querySelector('#total');
 let artist = document.querySelector('#artist');
 let song_name = document.getElementById('song_name');
-let songData2 = document.currentScript.getAttribute('songArray');
-let song_name2 = document.querySelector('#song_name');
 
-console.log(song_name2.value.song_name);
 let timer;
 let autoplay = 0;
 
@@ -24,12 +27,11 @@ let Playing_song = false;
 
 //create a audio Element
 let track = document.createElement('audio');
+console.log(song_name.value[1]);
 
-console.log(song_name.value);
-
-// for (var i=0; i < song_name.value.length; i++ ){
-// 	console.log(song_name.value[i].song_name);
-// }
+for (var i=0; i < song_name.value.length; i++ ){
+	console.log(song_name.value);
+}
 // Songs
 let All_song = [
 	{

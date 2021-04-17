@@ -5,7 +5,8 @@ const { v4: uuidv4 } = require('uuid');
 const e = require('express');
 const fs = require('fs');
 const { getAudioDurationInSeconds } = require('get-audio-duration');
-
+const mp3Duration = require('mp3-duration');
+const getmp3Duration = require('get-mp3-duration');
 
 //use db for queries, don't need to update anything
 const db = new mysql({
@@ -47,6 +48,14 @@ exports.upload = function(req, res){
     var img_name = file_Img.name;
     var file_Audio = req.files.songMP3;
     var audio_name = file_Audio.name;
+
+    //get song duration 
+    const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
+    var duration = getmp3Duration(buffer);
+    duration = duration/1000;
+    console.log(duration);
+  
+
     // generate songId
     var songId = uuidv4();
 
@@ -60,11 +69,11 @@ exports.upload = function(req, res){
     }
 
     //get audio duration
-    const stream = fs.createReadStream('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
+    // const stream = fs.createReadStream('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
     
-    getAudioDurationInSeconds(stream).then((duration) => {
-        console.log(duration);
-    });
+    // getAudioDurationInSeconds(stream).then((duration) => {
+    //     console.log(duration);
+    // });
 
     //testing figure out later
     var album_idB = 0;
@@ -84,7 +93,7 @@ exports.upload = function(req, res){
             if (err)
                 return res.status(500).send(err);
 
-            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: songDur, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
+            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: duration, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
    
         });
 
