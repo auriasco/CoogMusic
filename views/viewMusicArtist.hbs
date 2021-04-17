@@ -1,17 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <link rel="stylesheet" href="/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <link rel="stylesheet" href="/style.css">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>CoogMusic</title>
+  <style>
+  .main{
+    background-color: rgb(182, 103, 103);
+    overflow: hidden;
+    position: fixed;
+    height: 100px;
+    bottom: 0px;
+    width: 100%;
+  }
+
+  #track_image{
+    height: 50px;
+    width: 100px;
+    position: absolute;
+    left: 100px;
+    border-radius: 15px;
+	  box-shadow: 1px 0px 20px 12px rgba(240,240,240,0.2);
+
+  }
+
+  .middle_volume{
+    position: absolute;
+    left: 250px;
+  }
+
+  #artist{
+    position: absolute;
+    left: 405px;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 50%;
+    outline: none;
+    height: 2px;
+    margin: 0 15px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: #FF8A65;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .right input[type=range]{
+    width: 40%;
+  }
+  .left .volume{
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  .left .volume p{
+    font-size: 15px;
+  }
+  .left .volume i{
+    cursor: pointer;
+    padding: 8px 12px;
+    background: #FF8A65;
+  }
+  .left .volume i:hover{
+    background: rgba(245,245,245,0.1);
+  }
+  .volume #volume_show{
+    padding: 8px 12px;
+    margin: 0 5px 0 0;
+    background: rgba(245,245,245,0.1);
+  }
+
+  /* right part */
+  .right .middle{
+    width: 100%;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .right .middle button{
+    border: none;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;	
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+    transition: 0.5s;
+    background: rgba(255,255,255,0.1);
+  }
+  .right #title{
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: capitalize;
+    color: #fff;
+    font-size: 35px;
+  }
+  .right #artist{
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: capitalize;
+    color: #fff;
+    font-size: 18px;
+  }
+  .right .duration{
+    position: absolute;
+    left: 120px;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 20px;
+    margin-top: 40px;
+  }
+  .right .duration p{
+    color: #fff;
+    font-size: 15px;
+    margin-left: 20px;
+  }
+  .right #auto{
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 45px;
+    border: none;
+    padding: 10px 14px;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+    outline: none;
+    border-radius: 10px;
+  }
+  .right #auto i{
+    margin-left: 8px;
+  }
+  #play{
+    background: #FF8A65;
+    position: absolute;
+  }
+  .right button:hover{
+    background: #FF8A65;
+  }
+  .right i:before{
+    color: #fff;
+    font-size: 20px;
+  }
+
+  .right .show_song_no{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    color: #fff;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.2);
+  }
+  .right .show_song_no p:nth-child(2){
+    margin: 0 5px;
+  }
+
+  
+  </style>
+  <title>CoogMusic</title>
 
 </head>
 <body>
@@ -34,24 +208,62 @@
         
     </nav>
 
+      {{#eachRow songData 4}}
+        {{!-- <input style="display:none;" type="text" id = "song_name" name="song_name" value="{{this.song_name}}"> --}}
+        {{!-- <input style="display:none;" type="text" id = "artist_name" name="artist_name" value={{this.artist_name}}>
+        <input style="display:none;" type="text" id = "song_audio_path" name="song_audio_path" value={{this.song_audio_path}}>
+        <input style="display:none;" type="text" id = "song_img_path" name="song_img_path" value={{this.song_img_path}}> --}}
+      {{/eachRow}}
+    <h1>{{songData.song_name}}</h1>
+    <input style="display:none;" type="data" id = "song_name" name="song_name" value="{{songData}}">
 
     <div class="main">
-  	<p id="logo"><i class="fa fa-music"></i>Music</p>
+  	{{!-- <p id="logo"><i class="fa fa-music"></i>Music</p> --}}
     
     <!--- left part --->
      <div class="left">
 
       <!--- song img --->
       <img id="track_image">
-         <div class="volume">
+         {{!-- <div class="volume">
+            <p id="volume_show">90</p>
+            <i class="fa fa-volume-up" aria-hidden="true" onclick="mute_sound()" id="volume_icon"></i>
+            <input type="range" min="0" max="100" value="90" onchange="volume_change()" id="volume">  
+         </div> --}}
+
+     </div>
+ 
+    <div class="middle_volume">
+      <div class="volume">
             <p id="volume_show">90</p>
             <i class="fa fa-volume-up" aria-hidden="true" onclick="mute_sound()" id="volume_icon"></i>
             <input type="range" min="0" max="100" value="90" onchange="volume_change()" id="volume">  
          </div>
+    </div>
 
-     </div>
- 
+    {{!-- <div id="title">title.mp3</div>
+    <div id="artist">Artist name</div> --}}
 
+    {{!-- <!--- song duration part --->
+    <div class="duration">
+           <input type="range" min="0" max="100" value="0" id="duration_slider" onchange="change_duration()">
+    </div> --}}
+
+    {{!-- <div class="middle">
+  	<button onclick="previous_song()" id="pre"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+  	</div>
+
+    <div>
+      <button onclick="justplay()" id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
+    </div>
+
+    <div><button onclick="next_song()" id="next"><i class="fa fa-step-forward" aria-hidden="true"></i></button></div>
+
+    <div>
+      <button id="auto" onclick="autoplay_switch()">Auto play <i class="fa fa-circle-o-notch" aria-hidden="true"></i></button>
+    </div> --}}
+
+  
      <!--- right part --->
   	 <div class="right">
 
@@ -73,11 +285,11 @@
   	   </div>
 
        <!--- song duration part --->
-        <div class="duration">
+      <div class="duration">
            <input type="range" min="0" max="100" value="0" id="duration_slider" onchange="change_duration()">
-        </div>
+        </div> 
            <button id="auto" onclick="autoplay_switch()">Auto play <i class="fa fa-circle-o-notch" aria-hidden="true"></i></button>
-  	</div>
+  	</div> 
 
 
   </div>

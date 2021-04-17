@@ -10,6 +10,8 @@ const fileUpload = require('express-fileupload');
 const { connect } = require('./routes/pages');
 const Connection = require('sync-mysql');
 const fs = require("fs");
+const { getAudioDurationInSeconds } = require('get-audio-duration');
+
 
 const exphbs = require('express-handlebars');
 

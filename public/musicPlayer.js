@@ -1,3 +1,9 @@
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:5000/getSongs')
+    .then(response => response.json())
+    .then(data => loadNotificationPane(data['data']));
+});
+
 let previous = document.querySelector('#pre');
 let play = document.querySelector('#play');
 let next = document.querySelector('#next');
@@ -11,6 +17,7 @@ let auto_play = document.querySelector('#auto');
 let present = document.querySelector('#present');
 let total = document.querySelector('#total');
 let artist = document.querySelector('#artist');
+let song_name = document.getElementById('song_name');
 
 let timer;
 let autoplay = 0;
@@ -20,7 +27,11 @@ let Playing_song = false;
 
 //create a audio Element
 let track = document.createElement('audio');
+console.log(song_name.value[1]);
 
+for (var i=0; i < song_name.value.length; i++ ){
+	console.log(song_name.value);
+}
 // Songs
 let All_song = [
 	{
@@ -34,7 +45,21 @@ let All_song = [
 	  path: "song_audio/Justin_Bieber_Peaches.mp3",
 	  img: "song_images/peaches_justin_bieber.jpg",
 	  singer: "2"
+	},
+
+	{
+		name: "Peaches",
+		path: "song_audio/Drake_God_s_Plan.mp3",
+		img: "song_images/gods_plan.jpg",
+		singer: "3"
+	},
+	{
+		name: "Peaches",
+		path: "song_audio/Travis_Scott_YOSEMITE.mp3",
+		img: "song_images/Yosemite.jpg",
+		singer: "4"
 	}
+
 ];
 
 // function load the track
@@ -49,9 +74,11 @@ function load_track(index_no){
     track.load();
 
 	timer = setInterval(range_slider ,1000);
-	total.innerHTML = All_song.length;
+	total.innerHTML = 4;
+	console.log(All_song.length);
 	present.innerHTML = index_no + 1;
 }
+
 
 load_track(index_no);
 
