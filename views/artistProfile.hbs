@@ -48,12 +48,14 @@
         
                 {{#ifeq following true}}
                     
-                            <button type="submit" class="btn btn-primary">Unfollow</button>
+                            <button type="submit" class="btn btn-primary" name="pressedUnfollow" id="pressedUnfollow">Unfollow</button>
                             </form>
                         
                 {{/ifeq}}
                 {{#ifnoteq following true}}
-                    <a href="/artistProfile/{{artistData.artist_id}}" class="btn btn-primary">Follow</a> 
+                  <form action="/artistProfile/{{artistData.artist_id}}" method="POST">
+                    <button type="submit" class="btn btn-primary" name="pressedFollow" id="pressedFollow">Follow</button>
+                  </form>
                 {{/ifnoteq}}
             </div>
             
