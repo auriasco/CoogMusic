@@ -224,6 +224,23 @@ router.get('/viewMusicUser', (req, res) =>{
     res.render('viewMusicUser');
 });
 
+router.get('/create_report', (req, res) =>{
+    console.log('Get');
+    res.render('create_report');
+});
+router.get('/hourReport', (req, res) =>{
+    console.log('Get');
+    res.render('hourReport');
+});
+router.get('/countryReport', (req, res) =>{
+    console.log('Get');
+    res.render('countryReport');
+});
+router.get('/ageReport', (req, res) =>{
+    console.log('Get');
+    res.render('ageReport');
+});
+
 
 ////////////////////////////////////////////////
 
