@@ -49,8 +49,6 @@ exports.upload = function(req, res){
     var file_Audio = req.files.songMP3;
     var audio_name = file_Audio.name;
 
-  
-
     // generate songId
     var songId = uuidv4();
 
@@ -63,15 +61,7 @@ exports.upload = function(req, res){
         var song_img_path = songId + "." + "png";
     }
 
-    //get audio duration
-    // const stream = fs.createReadStream('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
-    
-    // getAudioDurationInSeconds(stream).then((duration) => {
-    //     console.log(duration);
-    // });
-
-    //testing figure out later
-    var album_idB = 0;
+    //assign table values
     var genre_idB = db.query(`SELECT genre_id FROM Genre WHERE genre_name = ?`, [genre]);
     var genre_idB = genre_idB[0].genre_id;
     var plays = 0;
@@ -88,13 +78,30 @@ exports.upload = function(req, res){
             
         });
 
-         //get song duration 
-        // const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
-        // var duration = getmp3Duration(buffer);
-        // duration = duration/1000;
-        console.log(__dirname);
-        duration = 0;
+        // get audio file path
+        const invertSlashes = str => {
+            let res = '';
+            for(let i = 0; i < str.length; i++){
+               if(str[i] !== '\\'){
+                  res += str[i];
+                  continue;
+               };
+               res += '/';
+            };
+            return res;
+        };
+
+        var path = require('path').dirname(__dirname);
+        path = path.substr(2);
+        console.log(invertSlashes(path));
+
+        //get song duration 
+        //const buffer = fs.readFileSync(path+'/public/song_audio/'+audio_name);
+        const buffer = fs.readFileSync(invertSlashes(path)+"/public/song_audio/"+audio_name);
+        var duration = getmp3Duration(buffer);
+        duration = duration/1000;
         console.log(duration);
+
 
                                     
         file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
