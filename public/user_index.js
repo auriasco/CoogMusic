@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('https://coogmusic.xyz/getNotifications')
+    fetch('http://localhost:5000/getSongDisplays')
+    .then(response => response.json())
+    .then(data => loadExplorePane(data['data']));
+    fetch('http://localhost:5000/getNotifications')
     .then(response => response.json())
     .then(data => loadNotificationPane(data['data']));
 });
@@ -27,7 +30,6 @@ function timeSince(date) {
 }
 
 function loadNotificationPane(data) {
-    console.log(data);
     var notification_pane = document.getElementById('notification-pane');
     for (var i = 0; i < data.length; i++) {
         var notification = document.createElement("div");
@@ -49,8 +51,6 @@ function loadNotificationPane(data) {
         var data1 = document.createElement("div");
         data1.classList.add("notification-data1");
         var image = document.createElement("img");
-        var x = "/song_images/" + data[i]["img_path"];
-
         image.setAttribute("src", "/song_images/" + data[i]["img_path"]);
         image.setAttribute("width", "50px");
         image.setAttribute("height", "50px");
@@ -69,5 +69,40 @@ function loadNotificationPane(data) {
         notification.append(header);
         notification.append(body);
         notification_pane.append(notification);
+    }
+}
+
+function loadExplorePane(data) {
+    var song_container = document.getElementById('song-container');
+    for (var i = 0; i < data.length; i++) {
+        console.log("test");
+        var song_item = document.createElement("btn");
+        song_item.setAttribute("class", "song-item");
+        song_item.setAttribute("id", "song-item");
+        song_item.setAttribute("onclick", "playSong()");
+        var image = document.createElement("img");
+        if (data[i]["song_img_path"] == "") {
+            image.setAttribute("src", "/song_images/unknown.jpg");
+        } else {
+            image.setAttribute("src", "/song_images/" + data[i]["song_img_path"]);
+        }
+        image.setAttribute("width", "100px");
+        image.setAttribute("height", "100px");
+
+        var song_item_text = document.createElement("div");
+        song_item_text.classList.add("song-item-text-container");
+        var song_name = document.createElement("h6");
+        song_name.innerHTML = data[i]["song_name"];
+        var artist_name = document.createElement("h6");
+        artist_name.innerHTML = data[i]["artist_name"];
+        song_item_text.append(song_name);
+        song_item_text.append(artist_name);
+        song_item.append(image);
+        song_item.append(song_item_text);
+        song_container.append(song_item);
+    }
+
+    function playSong() {
+        console.log("HEE");
     }
 }

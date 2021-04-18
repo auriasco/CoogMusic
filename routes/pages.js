@@ -51,11 +51,18 @@ router.get('/login', (req,res)=>{
 router.get('/getNotifications', (request, response) => {
     const db = dbService.getDbServiceInstance();
     const result = db.getNotifications();
-    console.log(result);
     result
     .then(data => response.json({data : data}))
     .catch(err => console.log(err));
 })
+
+router.get('/getSongDisplays', authController.getAccount, (request, response)=>{
+    const db = dbService.getDbServiceInstance();
+    const result = db.getSongDisplays();
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
 
 /*
 USE OF COOKIES: authController.getAccount = the middleware function to  get the cookies
@@ -170,14 +177,6 @@ router.get('/getSongs', authController.getAccount, (req, res)=>{
     if(req.acc){
         let songs = db.query(`SELECT * FROM Song`);
         console.log(songs);
-    }else{
-        res.redirect('/login');
-    }
-});
-
-router.get('/getSongDisplays', authController.getAccount, (req, res)=>{
-    if(req.acc){
-        let songs = db.query(`SELECT song_name, artist_name, song_audio_path, song_img_path FROM Song`);
     }else{
         res.redirect('/login');
     }
