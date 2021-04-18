@@ -61,6 +61,32 @@ exports.upload = function(req, res){
         var song_img_path = songId + "." + "png";
     }
 
+    const invertSlashes = str => {
+        let res = '';
+        for(let i = 0; i < str.length; i++){
+           if(str[i] !== '\\'){
+              res += str[i];
+              continue;
+           };
+           res += '/';
+        };
+        return res;
+    };
+
+    // get audio file path
+    var path = require('path').dirname(__dirname);
+    path = path.substr(2);
+    console.log(invertSlashes(path));
+
+    fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" +songId+".mp3", function(err) {
+        if ( err ) console.log('ERROR: ' + err);
+    });
+
+    fs.rename(invertSlashes(path)+"/public/song_images/"+img_name, invertSlashes(path)+"/public/song_images/" +songId+".jpg", function(err) {
+        if ( err ) console.log('ERROR: ' + err);
+    });
+    
+    
     //assign table values
     var genre_idB = db.query(`SELECT genre_id FROM Genre WHERE genre_name = ?`, [genre]);
     var genre_idB = genre_idB[0].genre_id;
@@ -79,18 +105,6 @@ exports.upload = function(req, res){
         });
 
         // get audio file path
-        const invertSlashes = str => {
-            let res = '';
-            for(let i = 0; i < str.length; i++){
-               if(str[i] !== '\\'){
-                  res += str[i];
-                  continue;
-               };
-               res += '/';
-            };
-            return res;
-        };
-
         var path = require('path').dirname(__dirname);
         path = path.substr(2);
         console.log(invertSlashes(path));
@@ -99,6 +113,7 @@ exports.upload = function(req, res){
         const buffer = fs.readFileSync(invertSlashes(path)+"/public/song_audio/"+audio_name);
         var duration = getmp3Duration(buffer);
         duration = duration/1000;
+        duration = 0
         console.log(duration);
 
 
@@ -117,11 +132,17 @@ exports.upload = function(req, res){
         return res.render('uploadMusic', {
             message: 'Song was Uploaded'
         })
+        
 
     }else{
         message = "This format is not allowed , please upload file with '.png','.jpg'";
         res.render('uploadMusic',{message: message});
     }
+
+    // fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" +song_id+".jpg", function(err) {
+    //     if ( err ) console.log('ERROR: ' + err);
+    //     console.log('audio renamed!')
+    // });
     
 };
 
