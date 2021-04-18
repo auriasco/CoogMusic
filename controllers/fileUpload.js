@@ -49,11 +49,6 @@ exports.upload = function(req, res){
     var file_Audio = req.files.songMP3;
     var audio_name = file_Audio.name;
 
-    //get song duration 
-    const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
-    var duration = getmp3Duration(buffer);
-    duration = duration/1000;
-    console.log(duration);
   
 
     // generate songId
@@ -79,23 +74,11 @@ exports.upload = function(req, res){
     var album_idB = 0;
     var genre_idB = db.query(`SELECT genre_id FROM Genre WHERE genre_name = ?`, [genre]);
     var genre_idB = genre_idB[0].genre_id;
-   // var genre_idB = 00;
-    var songDur = 9999;
     var plays = 0;
 
     //foreign keys = genre_idB, album_idB, artist_idB
 
     if(file_Img.mimetype == "image/jpeg" || file_Img.mimetype == "image/png" ){
-
-                                    
-        file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
-                            
-            if (err)
-                return res.status(500).send(err);
-
-            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: duration, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
-   
-        });
 
         
         file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
@@ -104,7 +87,27 @@ exports.upload = function(req, res){
 
             
         });
-        
+
+         //get song duration 
+        // const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
+        // var duration = getmp3Duration(buffer);
+        // duration = duration/1000;
+        console.log(__dirname);
+        duration = 0;
+        console.log(duration);
+
+                                    
+        file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
+                            
+            if (err)
+                return res.status(500).send(err);
+
+            db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: duration, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
+            
+        });
+
+    
+
         return res.render('uploadMusic', {
             message: 'Song was Uploaded'
         })

@@ -27,11 +27,7 @@ let Playing_song = false;
 
 //create a audio Element
 let track = document.createElement('audio');
-console.log(song_name.value[1]);
 
-for (var i=0; i < song_name.value.length; i++ ){
-	console.log(song_name.value);
-}
 // Songs
 let All_song = [
 	{

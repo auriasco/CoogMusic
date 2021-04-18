@@ -168,7 +168,7 @@ router.get('/viewMusicArtist', authController.getAccount, (req, res)=>{
 
 router.get('/getSongs', authController.getAccount, (req, res)=>{
     if(req.acc){
-        let songs = db.query(`SELECT * FROM Song`);
+        let songs = db.query(`SELECT (song_name,  FROM Song`);
         console.log(songs);
     }else{
         res.redirect('/login');
