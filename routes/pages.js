@@ -175,6 +175,14 @@ router.get('/getSongs', authController.getAccount, (req, res)=>{
     }
 });
 
+router.get('/getSongDisplays', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let songs = db.query(`SELECT song_name, artist_name, song_audio_path, song_img_path FROM Song`);
+    }else{
+        res.redirect('/login');
+    }
+});
+
 router.get('/editProfile', authController.getAccount, (req, res)=>{
     if(req.acc){
         res.render('editProfile', {acc: req.acc, error: req.flash('error'), success: req.flash('success')});
