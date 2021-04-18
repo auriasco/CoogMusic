@@ -80,7 +80,7 @@ exports.upload = function(req, res){
     var genre_idB = db.query(`SELECT genre_id FROM Genre WHERE genre_name = ?`, [genre]);
     var genre_idB = genre_idB[0].genre_id;
    // var genre_idB = 00;
-    var songDur = 9999;
+    var duration = 0;
     var plays = 0;
 
     //foreign keys = genre_idB, album_idB, artist_idB
@@ -90,11 +90,11 @@ exports.upload = function(req, res){
                                     
         file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
                             
-            if (err)
+            if (err) {
                 return res.status(500).send(err);
+            }
 
             db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: duration, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
-   
         });
 
         
