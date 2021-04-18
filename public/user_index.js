@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:5000/getNotifications')
+    fetch('https://coogmusic.xyz/getNotifications')
     .then(response => response.json())
     .then(data => loadNotificationPane(data['data']));
 });
