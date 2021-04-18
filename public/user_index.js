@@ -49,7 +49,9 @@ function loadNotificationPane(data) {
         var data1 = document.createElement("div");
         data1.classList.add("notification-data1");
         var image = document.createElement("img");
-        image.setAttribute("src", "/song_images/" + data[i]["song_id"] + ".png");
+        var x = "/song_images/" + data[i]["img_path"];
+
+        image.setAttribute("src", "/song_images/" + data[i]["img_path"]);
         image.setAttribute("width", "50px");
         image.setAttribute("height", "50px");
         var data2 = document.createElement("div");
