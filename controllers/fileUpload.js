@@ -50,9 +50,10 @@ exports.upload = function(req, res){
     var audio_name = file_Audio.name;
 
     //get song duration 
-    const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
-    var duration = getmp3Duration(buffer);
-    duration = duration/1000;
+    //const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
+    //var duration = getmp3Duration(buffer);
+    //duration = duration/1000;
+    duration = 0;
     console.log(duration);
   
 
