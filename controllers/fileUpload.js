@@ -96,7 +96,6 @@ exports.upload = function(req, res){
         console.log(invertSlashes(path));
 
         //get song duration 
-        //const buffer = fs.readFileSync(path+'/public/song_audio/'+audio_name);
         const buffer = fs.readFileSync(invertSlashes(path)+"/public/song_audio/"+audio_name);
         var duration = getmp3Duration(buffer);
         duration = duration/1000;
