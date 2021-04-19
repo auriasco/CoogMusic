@@ -219,7 +219,7 @@
  
     <div class="middle_volume">
       <div class="volume">
-            <p id="volume_show">90</p>
+            {{!-- <p id="volume_show">90</p> --}}
             <i class="fa fa-volume-up" aria-hidden="true" onclick="mute_sound()" id="volume_icon"></i>
             <input type="range" min="0" max="100" value="90" onchange="volume_change()" id="volume">  
          </div>
@@ -228,11 +228,11 @@
      <!--- right part --->
   	 <div class="right">
 
-        <div class="show_song_no">
+        {{!-- <div class="show_song_no">
           <p id="present">1</p>
           <p>/</p>
           <p id="total">5</p>
-        </div>
+        </div> --}}
 
        <!--- song title & artist name --->
       <p id="title">title.mp3</p>
