@@ -21,18 +21,10 @@ router.post('/login',  authController.login);
 router.get('/logout', authController.logout);
 
 
-//admin
-//router.get('/viewUsers',  DBController.viewUsers);
-//router.get('/viewArtistsAdmin', DBController.viewArtistsAdmin);
-
 //artists
 router.post('/upload', fileUploadcontroller.upload);
 
 router.post('/delete', fileUploadcontroller.delete);
-
-//user
-//router.get('/viewArtists', DBController.viewArtists);
-
 
 
 module.exports = router;
