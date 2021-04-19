@@ -99,7 +99,7 @@ exports.upload = function(req, res){
     if(file_Img.mimetype == "image/jpeg" || file_Img.mimetype == "image/png" ){
 
         
-        file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
+        file_Audio.mv('song_audio/'+file_Audio.name, function(err){
             if(err)
                 return res.status(500).send(err);
 
@@ -112,7 +112,7 @@ exports.upload = function(req, res){
         console.log(invertSlashes(path));
 
         //get song duration 
-        const buffer = fs.readFileSync(invertSlashes(path)+"/song_audio/"+audio_name);
+        const buffer = fs.readFileSync("song_audio/"+audio_name);
         
         var duration = getmp3Duration(buffer);
         duration = duration/1000;
