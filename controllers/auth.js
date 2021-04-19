@@ -261,12 +261,10 @@ exports.register =  (req, res)=>{
     const artist_id = 0; //SET TO 0 RN CHANGE LATER
 
     //Not a musician, so create a user account
-    if(isMusician === false)
-    {
+    if(isMusician === false) {
 
         //Create  the user account and insert it into the database
         db2.query(`INSERT INTO User SET ?`, {artist_idF: artist_id, user_id: uniqueId, user_name: username, user_email: email, country: country, age: currAge , user_password: password, user_name_display: name});
-        
 
         //Cookie stuff, same as before
         const token = jwt.sign({id: uniqueId, type: 'User'}, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRES_IN} );

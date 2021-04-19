@@ -51,11 +51,18 @@ router.get('/login', (req,res)=>{
 router.get('/getNotifications', (request, response) => {
     const db = dbService.getDbServiceInstance();
     const result = db.getNotifications();
-    console.log(result);
     result
     .then(data => response.json({data : data}))
     .catch(err => console.log(err));
 })
+
+router.get('/getSongDisplays', authController.getAccount, (request, response)=>{
+    const db = dbService.getDbServiceInstance();
+    const result = db.getSongDisplays();
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
 
 /*
 USE OF COOKIES: authController.getAccount = the middleware function to  get the cookies

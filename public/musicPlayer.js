@@ -1,4 +1,11 @@
 
+/*document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:5000/getSongs')
+    .then(response => response.json())
+    .then(data => loadNotificationPane(data['data']));
+});
+
+
 let previous = document.querySelector('#pre');
 let play = document.querySelector('#play');
 let next = document.querySelector('#next');
@@ -251,4 +258,4 @@ function range_slider(){
 		       playsong();
            }
 	    }
-}
+
