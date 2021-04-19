@@ -112,7 +112,7 @@ exports.upload = function(req, res){
         console.log(invertSlashes(path));
 
         //get song duration 
-        const buffer = fs.readFileSync(invertSlashes(path)+"/public/song_audio/"+audio_name);
+        const buffer = fs.readFileSync(invertSlashes(path)+"/song_audio/"+audio_name);
         
         var duration = getmp3Duration(buffer);
         duration = duration/1000;
@@ -121,7 +121,7 @@ exports.upload = function(req, res){
 
 
                                     
-        file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
+        file_Img.mv('song_images/'+ file_Img.name, function(err) {
                             
             if (err) {
                 return res.status(500).send(err);
@@ -131,11 +131,11 @@ exports.upload = function(req, res){
 
         });
 
-        fs.rename(path+"/public/song_audio/"+audio_name, path+"/public/song_audio/" + songId + ".mp3", function(err) {
+        fs.rename(path+"/song_audio/"+audio_name, path+"/song_audio/" + songId + ".mp3", function(err) {
             if ( err ) console.log('ERROR: ' + err);
         });
     
-        fs.rename(invertSlashes(path)+"/public/song_images/"+img_name, invertSlashes(path)+"/public/song_images/" + songId + ".png", function(err) {
+        fs.rename(invertSlashes(path)+"/song_images/"+img_name, invertSlashes(path)+"/song_images/" + songId + ".png", function(err) {
             if ( err ) console.log('ERROR: ' + err);
         });
 
