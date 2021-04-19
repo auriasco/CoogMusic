@@ -114,6 +114,7 @@ function loadExplorePane(data) {
         var song_name = document.createElement("h6");
         song_name.innerHTML = data[i]["song_name"];
         var artist_name = document.createElement("h6");
+
         artist_name.innerHTML = data[i]["artist_name"];
         var plays = document.createElement("h5");
         plays.innerHTML = 'Number of plays: '+ data[i]["plays"];

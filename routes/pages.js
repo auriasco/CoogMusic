@@ -63,11 +63,19 @@ router.get('/getNotifications', authController.getAccount, (request, response) =
     } else{
         res.redirect('/login');
     }
-})
+});
 
 router.get('/getSongDisplays', (request, response)=>{
     const db = dbService.getDbServiceInstance();
     const result = db.getSongDisplays();
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
+
+router.get('/getArtistSongs/:artist_name', (request, response)=>{
+    const db = dbService.getDbServiceInstance();
+    const result = db.getArtistSongs(request.params.artist_name);
     result
     .then(data => response.json({data : data}))
     .catch(err => console.log(err));
