@@ -54,8 +54,6 @@ exports.upload = function(req, res){
     //const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
     //var duration = getmp3Duration(buffer);
     //duration = duration/1000;
-    duration = 0;
-    console.log(duration);
   
 
 
@@ -64,11 +62,12 @@ exports.upload = function(req, res){
 
     // rename files
     var song_audio_path = songId + "." + "mp3";
+
     if (file_Img.mimetype == "image/jpeg"){
-        var song_img_path = songId + "." + "jpeg";
+        song_img_path = songId + "." + "jpeg";
     }
     else{
-        var song_img_path = songId + "." + "png";
+        song_img_path = songId + "." + "png";
     }
 
     const invertSlashes = str => {
@@ -87,14 +86,6 @@ exports.upload = function(req, res){
     var path = require('path').dirname(__dirname);
     path = path.substr(2);
     console.log(invertSlashes(path));
-
-    fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" +songId+".mp3", function(err) {
-        if ( err ) console.log('ERROR: ' + err);
-    });
-
-    fs.rename(invertSlashes(path)+"/public/song_images/"+img_name, invertSlashes(path)+"/public/song_images/" +songId+".jpg", function(err) {
-        if ( err ) console.log('ERROR: ' + err);
-    });
     
     
     //assign table values
@@ -140,7 +131,13 @@ exports.upload = function(req, res){
 
         });
 
+        fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" + songId + ".mp3", function(err) {
+            if ( err ) console.log('ERROR: ' + err);
+        });
     
+        fs.rename(invertSlashes(path)+"/public/song_images/"+img_name, invertSlashes(path)+"/public/song_images/" + songId + ".png", function(err) {
+            if ( err ) console.log('ERROR: ' + err);
+        });
 
         return res.render('uploadMusic', {
             message: 'Song was Uploaded'
@@ -151,11 +148,6 @@ exports.upload = function(req, res){
         message = "This format is not allowed , please upload file with '.png','.jpg'";
         res.render('uploadMusic',{message: message});
     }
-
-    // fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" +song_id+".jpg", function(err) {
-    //     if ( err ) console.log('ERROR: ' + err);
-    //     console.log('audio renamed!')
-    // });
     
 };
 
