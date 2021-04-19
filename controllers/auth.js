@@ -500,5 +500,11 @@ exports.updateUserProfile = (req, res)=>{
     return res.redirect('/editProfile');
 
 };
+exports.filter = (req, res)=>{
+    //same as aboev, but selects every Artist
+    let artists = db.query(`SELECT * FROM Artist`);
+    req.flash('data', artists);
+    return res.redirect('/filter');
+}
 
 /////////---------------------------------------------------------//////

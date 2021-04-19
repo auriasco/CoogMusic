@@ -249,7 +249,16 @@ router.get('/viewMusicUser', (req, res) =>{
     console.log('Get');
     res.render('viewMusicUser');
 });
-
+router.get('/filter',authController.getAccount, (req, res) =>{
+    console.log('Get');
+    if(req.acc){
+        let artists = db.query(`SELECT * FROM Artist`);
+        res.render('filter', {acc: req.acc, artistData: artists});
+    }else{
+        res.redirect('/login');
+    }
+    
+});
 
 ////////////////////////////////////////////////
 
