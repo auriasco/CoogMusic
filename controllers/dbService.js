@@ -81,7 +81,7 @@ class DbService {
                 const response = await new Promise((resolve, reject) => {
                     var date = new Date();
                     var formatDate = moment(date).format('YYYY-MM-DD HH:MM:SS');
-                    console.log("ff: " + formatDate);
+                    //console.log("dont unformat for: " + formatDate);
                     //const query = `INSERT INTO PlayTracker (played_by_artist_id, dateTime_Play, song_by_artist_id) VALUES (\"${artistId}\", ${formatDate}, \"${songId}\")`;
                     
                     
@@ -103,7 +103,7 @@ class DbService {
                 const response = await new Promise((resolve, reject) => {
                     var date = new Date();
                     var formatDate = moment(date).format('YYYY-MM-DD HH:MM:SS');
-                    console.log("ff: " + formatDate);
+                    //console.log("ff: " + formatDate);
                     //const query = `INSERT INTO PlayTracker (played_by_artist_id, dateTime_Play, song_by_artist_id) VALUES (\"${artistId}\", ${formatDate}, \"${songId}\")`;
                     
                     
