@@ -36,10 +36,7 @@
     left: 250px;
   }
 
-  #artist{
-    position: absolute;
-    left: 405px;
-  }
+  
 
   input[type="range"] {
     -webkit-appearance: none;
@@ -60,6 +57,7 @@
   .right input[type=range]{
     width: 40%;
   }
+
   .left .volume{
     position: absolute;
     bottom: 10%;
@@ -71,66 +69,72 @@
     justify-content: center;
     color: #fff;
   }
+
+  #volume{
+    margin-top: 60px;
+    left: 200px;
+  }
+
   .left .volume p{
     font-size: 15px;
   }
+
   .left .volume i{
     cursor: pointer;
     padding: 8px 12px;
     background: #FF8A65;
   }
+
   .left .volume i:hover{
-    background: rgba(245,245,245,0.1);
-  }
-  .volume #volume_show{
-    padding: 8px 12px;
-    margin: 0 5px 0 0;
     background: rgba(245,245,245,0.1);
   }
 
   /* right part */
   .right .middle{
     width: 100%;
-      display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
+
   .right .middle button{
     border: none;
     height: 70px;
     width: 70px;
     border-radius: 50%;	
-      display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     outline: none;
     transition: 0.5s;
     background: rgba(255,255,255,0.1);
+    
   }
-  .right #title{
+
+  #title{
     position: absolute;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 30px;
+    height: fit-content;
+    right: 1150px;
     text-transform: capitalize;
     color: #fff;
-    font-size: 35px;
+    font-size: 20px;
   }
-  .right #artist{
+  #artist{
     position: absolute;
-    top: 110px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 0px;
+    left: 900px;
     text-transform: capitalize;
     color: #fff;
-    font-size: 18px;
+    font-size: 15px;
   }
   .right .duration{
     position: absolute;
-    left: 120px;
+    left: 420px
+   
     transform: translateX(-50%);
-    width: 100%;
+    width: 200%;
     height: 20px;
     margin-top: 40px;
   }
@@ -142,7 +146,7 @@
   .right #auto{
     font-size: 18px;
     cursor: pointer;
-    margin-top: 45px;
+    margin-top: 0px;
     border: none;
     padding: 10px 14px;
     color: #fff;
@@ -156,7 +160,22 @@
   #play{
     background: #FF8A65;
     position: absolute;
+    top: 2px;
+    right: 800px;
+    
   }
+  #pre{
+    position: absolute;
+    top: 2px;
+    right: 900px;
+  }
+
+  #next{
+    position: absolute;
+    top: 2px;
+    right: 700px;
+  }
+  
   .right button:hover{
     background: #FF8A65;
   }
@@ -218,60 +237,31 @@
     <input style="display:none;" type="data" id = "song_name" name="song_name" value="{{songData}}">
 
     <div class="main">
-  	{{!-- <p id="logo"><i class="fa fa-music"></i>Music</p> --}}
     
     <!--- left part --->
-     <div class="left">
+    <div class="left">
 
-      <!--- song img --->
-      <img id="track_image">
-         {{!-- <div class="volume">
-            <p id="volume_show">90</p>
-            <i class="fa fa-volume-up" aria-hidden="true" onclick="mute_sound()" id="volume_icon"></i>
-            <input type="range" min="0" max="100" value="90" onchange="volume_change()" id="volume">  
-         </div> --}}
+    <!--- song img --->
+    <img id="track_image">
 
      </div>
  
     <div class="middle_volume">
       <div class="volume">
-            <p id="volume_show">90</p>
+            {{!-- <p id="volume_show"></p> --}}
             <i class="fa fa-volume-up" aria-hidden="true" onclick="mute_sound()" id="volume_icon"></i>
             <input type="range" min="0" max="100" value="90" onchange="volume_change()" id="volume">  
          </div>
     </div>
-
-    {{!-- <div id="title">title.mp3</div>
-    <div id="artist">Artist name</div> --}}
-
-    {{!-- <!--- song duration part --->
-    <div class="duration">
-           <input type="range" min="0" max="100" value="0" id="duration_slider" onchange="change_duration()">
-    </div> --}}
-
-    {{!-- <div class="middle">
-  	<button onclick="previous_song()" id="pre"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
-  	</div>
-
-    <div>
-      <button onclick="justplay()" id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
-    </div>
-
-    <div><button onclick="next_song()" id="next"><i class="fa fa-step-forward" aria-hidden="true"></i></button></div>
-
-    <div>
-      <button id="auto" onclick="autoplay_switch()">Auto play <i class="fa fa-circle-o-notch" aria-hidden="true"></i></button>
-    </div> --}}
-
   
      <!--- right part --->
   	 <div class="right">
-
+{{!-- 
         <div class="show_song_no">
           <p id="present">1</p>
           <p>/</p>
           <p id="total">5</p>
-        </div>
+        </div> --}}
 
        <!--- song title & artist name --->
       <p id="title">title.mp3</p>
