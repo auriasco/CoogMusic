@@ -13,14 +13,7 @@
   <h2>Filterable List</h2>
   <p>Type something in the input field to search the list for specific items:</p>  
   <input class="form-control" id="myInput" type="text" placeholder="Search..">
-  <br>
-  <ul class="list-group" id="myList">
-    <li class="list-group-item">First item</li>
-    <li class="list-group-item">Second item</li>
-    <li class="list-group-item">Third item</li>
-    <li class="list-group-item">Fourth</li>
-    
-  </ul>
+  
     <div class="container mt-4"> 
     
         {{#eachRow artistData 4}}
@@ -28,7 +21,7 @@
                 {{#each columns}}
 
             <div class="list-group" id = "myList">
-                <li class="list-group-item">{{this.artist_name}} {{this.country}}</li>
+                <li class="list-group-item">{{this.artist_name}} {{this.country}} {{this.age}}</li>
                 
                 
             </div>
