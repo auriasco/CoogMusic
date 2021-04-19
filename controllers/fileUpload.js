@@ -49,7 +49,6 @@ exports.upload = function(req, res){
     var file_Audio = req.files.songMP3;
     var audio_name = file_Audio.name;
 
-
     //get song duration 
     //const buffer = fs.readFileSync('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
     //var duration = getmp3Duration(buffer);
@@ -57,7 +56,6 @@ exports.upload = function(req, res){
     duration = 0;
     console.log(duration);
   
-
 
     // generate songId
     var songId = uuidv4();
@@ -71,63 +69,24 @@ exports.upload = function(req, res){
         var song_img_path = songId + "." + "png";
     }
 
-    const invertSlashes = str => {
-        let res = '';
-        for(let i = 0; i < str.length; i++){
-           if(str[i] !== '\\'){
-              res += str[i];
-              continue;
-           };
-           res += '/';
-        };
-        return res;
-    };
-
-    // get audio file path
-    var path = require('path').dirname(__dirname);
-    path = path.substr(2);
-    console.log(invertSlashes(path));
-
-    fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" +songId+".mp3", function(err) {
-        if ( err ) console.log('ERROR: ' + err);
-    });
-
-    fs.rename(invertSlashes(path)+"/public/song_images/"+img_name, invertSlashes(path)+"/public/song_images/" +songId+".jpg", function(err) {
-        if ( err ) console.log('ERROR: ' + err);
-    });
+    //get audio duration
+    // const stream = fs.createReadStream('/Users/Student/Desktop/CoogMusic/CoogMusic/public/song_audio/'+audio_name);
     
-    
-    //assign table values
+    // getAudioDurationInSeconds(stream).then((duration) => {
+    //     console.log(duration);
+    // });
+
+    //testing figure out later
+    var album_idB = 0;
     var genre_idB = db.query(`SELECT genre_id FROM Genre WHERE genre_name = ?`, [genre]);
     var genre_idB = genre_idB[0].genre_id;
-
+   // var genre_idB = 00;
+    var duration = 0;
     var plays = 0;
 
     //foreign keys = genre_idB, album_idB, artist_idB
 
     if(file_Img.mimetype == "image/jpeg" || file_Img.mimetype == "image/png" ){
-
-        
-        file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
-            if(err)
-                return res.status(500).send(err);
-
-            
-        });
-
-        // get audio file path
-        var path = require('path').dirname(__dirname);
-        path = path.substr(2);
-        console.log(invertSlashes(path));
-
-        //get song duration 
-        const buffer = fs.readFileSync(invertSlashes(path)+"/public/song_audio/"+audio_name);
-        
-        var duration = getmp3Duration(buffer);
-        duration = duration/1000;
-        // duration = 0
-        // console.log(duration);
-
 
                                     
         file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
@@ -137,25 +96,24 @@ exports.upload = function(req, res){
             }
 
             db2.query(`INSERT INTO Song SET ?`,{song_name: song_Name, artist_idB: artistId, artist_name: artist_Name, genre_idB: genre_idB, song_id: songId, release_date: release_Date, song_duration: duration, plays: plays, song_audio_path: song_audio_path, song_img_path: song_img_path});
-
         });
 
-    
+        
+        file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
+            if(err)
+                return res.status(500).send(err);
 
+            
+        });
+        
         return res.render('uploadMusic', {
             message: 'Song was Uploaded'
         })
-        
 
     }else{
         message = "This format is not allowed , please upload file with '.png','.jpg'";
         res.render('uploadMusic',{message: message});
     }
-
-    // fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" +song_id+".jpg", function(err) {
-    //     if ( err ) console.log('ERROR: ' + err);
-    //     console.log('audio renamed!')
-    // });
     
 };
 

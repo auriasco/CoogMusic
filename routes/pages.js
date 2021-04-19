@@ -174,12 +174,12 @@ router.get('/viewMusicArtist', authController.getAccount, (req, res)=>{
 });
 
 router.get('/getSongs', authController.getAccount, (req, res)=>{
-    const db = dbService.getDbServiceInstance();
-    const result = db.getSongs();
-    console.log(result);
-    result
-    .then(data => res.json({data : data}))
-    .catch(err => console.log(err));
+    if(req.acc){
+        let songs = db.query(`SELECT * FROM Song`);
+        console.log(songs);
+    }else{
+        res.redirect('/login');
+    }
 });
 
 router.get('/editProfile', authController.getAccount, (req, res)=>{
