@@ -108,7 +108,6 @@ exports.upload = function(req, res){
 
         // get audio file path
         var path = require('path').dirname(__dirname);
-        path = path.substr(2);
         // console.log(invertSlashes(path));
 
         //get song duration 
