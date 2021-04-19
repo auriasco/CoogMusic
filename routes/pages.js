@@ -263,17 +263,18 @@ router.get('/ageReport', authController.getAccount, (req, res) =>{
         ageN[4] = db.query(`SELECT COUNT(*) FROM Artist WHERE age BETWEEN 46 AND 55`);
         ageN[5] = db.query(`SELECT COUNT(*) FROM Artist WHERE age BETWEEN 56 AND 65`);
         ageN[6] = db.query(`SELECT COUNT(*) FROM Artist WHERE age > 65`);
-        groups.age = groups;
-        i = 0;
-        ageNums = JSON.stringify(ageN);
-        ageN.forEach(num => {
-            num.age = groups[i];
-            i++;
-        });
+        
+        ageN[0] = JSON.stringify(ageN[0]);
+        ageN[1] = JSON.stringify(ageN[1]);
+        ageN[2] = JSON.stringify(ageN[2]);
+        ageN[3] = JSON.stringify(ageN[3]);
+        ageN[4] = JSON.stringify(ageN[4]);
+        ageN[5] = JSON.stringify(ageN[5]);
+        ageN[6] = JSON.stringify(ageN[6]);
         
         
 
-        res.render('ageReport', {acc: req.acc, artistData: artists, group: groups, ageNum: ageNums});
+        res.render('ageReport', {acc: req.acc, artistData: artists, group: groups, ageNum: ageN});
     }else{
         res.redirect('/login');
     }
