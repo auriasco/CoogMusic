@@ -9,10 +9,7 @@ const mysqladd = require('mysql2');
 /* Middleware functions included:
 exports.viewUsers
 exports.viewArtists
-
 */
-
-
 
 //database
 const db = new mysql({
@@ -48,15 +45,26 @@ router.get('/login', (req,res)=>{
 });
 
 //User Page
-router.get('/getNotifications', (request, response) => {
-    const db = dbService.getDbServiceInstance();
-    const result = db.getNotifications();
-    result
-    .then(data => response.json({data : data}))
-    .catch(err => console.log(err));
+router.get('/getNotifications', authController.getAccount, (request, response) => {
+    if(request.acc) {
+        const db = dbService.getDbServiceInstance();
+        var result = null;
+        if (request.acc.user_id) {
+            result = db.getUserNotifications(request.acc.user_id);
+        } else if (request.acc.artist_id) {
+            result = db.getUserNotifications(request.acc.artist_id);
+        } /* else if (request.acc.admin_id) {
+            const result = db.getAdminNotifications(request.acc.admin_id);
+        }*/
+        result
+        .then(data => response.json({data : data}))
+        .catch(err => console.log(err));
+    } else{
+        res.redirect('/login');
+    }
 })
 
-router.get('/getSongDisplays', authController.getAccount, (request, response)=>{
+router.get('/getSongDisplays', (request, response)=>{
     const db = dbService.getDbServiceInstance();
     const result = db.getSongDisplays();
     result
@@ -114,12 +122,6 @@ router.get('/artist_index', authController.getAccount, (req, res)=>{
     }
 });
 
-//Artist Music Page
-// router.get('/viewMusicArtist', (req, res) =>{
-//     console.log('Get');
-//     res.render('viewMusicArtist');
-// });
-
 //Upload Music
 
 router.get('/uploadMusic', authController.getAccount, (req, res) =>{
@@ -159,24 +161,6 @@ router.get('/viewArtists', authController.getAccount, (req, res)=>{
     if(req.acc){
         let artists = db.query(`SELECT * FROM Artist`);
         res.render('viewArtists', {acc: req.acc, artistData: artists});
-    }else{
-        res.redirect('/login');
-    }
-});
-
-router.get('/viewMusicArtist', authController.getAccount, (req, res)=>{
-    if(req.acc){
-        let songs = db.query(`SELECT * FROM Song`);
-        res.render('viewMusicArtist', {acc: req.acc, songData: songs});
-    }else{
-        res.redirect('/login');
-    }
-});
-
-router.get('/getSongs', authController.getAccount, (req, res)=>{
-    if(req.acc){
-        let songs = db.query(`SELECT * FROM Song`);
-        console.log(songs);
     }else{
         res.redirect('/login');
     }
@@ -242,13 +226,6 @@ router.get('/viewArtistsAdmin', (req, res)=>{
 router.get('/admin_index', (req, res)=>{
     res.render('admin_index');
 });
-
-//User Music Page
-router.get('/viewMusicUser', (req, res) =>{
-    console.log('Get');
-    res.render('viewMusicUser');
-});
-
 
 ////////////////////////////////////////////////
 

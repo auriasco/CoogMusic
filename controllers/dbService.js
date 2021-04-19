@@ -24,10 +24,26 @@ class DbService {
         return instance ? instance : new DbService();
     }
 
-    async getNotifications() {
+    async getUserNotifications(id) {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM Notification;";
+                const query = `SELECT * FROM Notification WHERE user_id=\"${id}\" OR header_text=\"Sponsored\"`;
+                console.log(query);
+                connection.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getAdminNotifications(id) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT * FROM Notification WHERE user_id=id OR header_text=\"Needs Verification\"";
                 connection.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);

@@ -321,3 +321,20 @@ div.musicianDrop{
     background: #FF8A65;
     color: white;
 }
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 50%;
+    outline: none;
+    height: 2px;
+    margin: 0 15px;
+  }
+
+input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: #FF8A65;
+    border-radius: 50%;
+    cursor: pointer;
+}
