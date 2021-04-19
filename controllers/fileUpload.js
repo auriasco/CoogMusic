@@ -83,9 +83,9 @@ exports.upload = function(req, res){
     };
 
     // get audio file path
-    var path = require('path').dirname(__dirname);
-    //path = path.substr(1);
-    console.log(invertSlashes(path));
+    // var path = require('path').dirname(__dirname);
+    // path = path.substr(2);
+    // console.log(invertSlashes(path));
     
     
     //assign table values
@@ -99,7 +99,7 @@ exports.upload = function(req, res){
     if(file_Img.mimetype == "image/jpeg" || file_Img.mimetype == "image/png" ){
 
         
-        file_Audio.mv('song_audio/'+file_Audio.name, function(err){
+        file_Audio.mv('public/song_audio/'+file_Audio.name, function(err){
             if(err)
                 return res.status(500).send(err);
 
@@ -109,19 +109,17 @@ exports.upload = function(req, res){
         // get audio file path
         var path = require('path').dirname(__dirname);
         path = path.substr(2);
-        console.log(invertSlashes(path));
+        // console.log(invertSlashes(path));
 
         //get song duration 
-        const buffer = fs.readFileSync("song_audio/"+audio_name);
+        const buffer = fs.readFileSync(invertSlashes(path)+"/public/song_audio/"+audio_name);
         
         var duration = getmp3Duration(buffer);
         duration = duration/1000;
         // duration = 0
         // console.log(duration);
-
-
                                     
-        file_Img.mv('song_images/'+ file_Img.name, function(err) {
+        file_Img.mv('public/song_images/'+ file_Img.name, function(err) {
                             
             if (err) {
                 return res.status(500).send(err);
@@ -131,13 +129,13 @@ exports.upload = function(req, res){
 
         });
 
-//         fs.rename(path+"/song_audio/"+audio_name, path+"/song_audio/" + songId + ".mp3", function(err) {
-//             if ( err ) console.log('ERROR: ' + err);
-//         });
+        fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" + songId + ".mp3", function(err) {
+            if ( err ) console.log('ERROR: ' + err);
+        });
     
-//         fs.rename(path+"/song_images/"+img_name, path+"/song_images/" + songId + ".png", function(err) {
-//             if ( err ) console.log('ERROR: ' + err);
-//         });
+        fs.rename(invertSlashes(path)+"/public/song_images/"+img_name, invertSlashes(path)+"/public/song_images/" + songId + ".jpg", function(err) {
+            if ( err ) console.log('ERROR: ' + err);
+        });
 
         return res.render('uploadMusic', {
             message: 'Song was Uploaded'
