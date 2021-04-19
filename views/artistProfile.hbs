@@ -17,14 +17,24 @@
     <nav>
         <h1> CoogMusic
         </h1>
-            <ul>
-                <li> <a href="/user_index">Home </a> </li>
-                <li> <a href="/ViewMusicUser">View Music </a> </li>
-                <li> <a href="/viewArtists">View Artists </a> </li>
-                <li> <a href="/CreatePlaylist">Create Playlist </a> </li>
-                <li> <a href="/editProfile">Edit Profile </a> </li>
-                <li> <a href="/auth/logout">Sign Out </a> </li>
-            </ul>
+            {{#if acc.user_id}}
+                <ul>
+                    <li> <a href="/user_index">Home </a> </li>
+                    <li> <a href="/viewArtists">View Artists </a> </li>
+                    <li> <a href="/editProfile">Edit Profile </a> </li>
+                    <li> <a href="/auth/logout">Sign Out </a> </li>
+                </ul>
+            {{/if}}
+
+            {{#if acc.artist_id}}
+                <ul>
+                    <li> <a href="/artist_index">Home</a> </li>
+                    <li> <a href="/viewArtists">View Artists</a> </li>
+                    <li> <a href="/uploadMusic">Upload Music</a> </li>
+                    <li> <a href="/editArtistProfile">Edit Settings</a> </li>
+                    <li> <a href="/auth/logout">Sign Out</a> </li>
+                </ul>
+            {{/if}} 
         
     </nav>
 
@@ -45,18 +55,19 @@
                 <button type="button" disabled="" class="btn btn-primary" style = "background-color: black;">
                 Followers <span class="badge bg-secondary">{{artistData.followerCount}}</span>
                 </button>
-        
-                {{#ifeq following true}}
-                    
-                            <button type="submit" class="btn btn-primary" name="pressedUnfollow" id="pressedUnfollow">Unfollow</button>
-                            </form>
-                        
-                {{/ifeq}}
-                {{#ifnoteq following true}}
-                  <form action="/artistProfile/{{artistData.artist_id}}" method="POST">
-                    <button type="submit" class="btn btn-primary" name="pressedFollow" id="pressedFollow">Follow</button>
-                  </form>
-                {{/ifnoteq}}
+                {{#if acc.user_id}}
+                  {{#ifeq following true}}
+                      
+                              <button type="submit" class="btn btn-primary" name="pressedUnfollow" id="pressedUnfollow">Unfollow</button>
+                              </form>
+                          
+                  {{/ifeq}}
+                  {{#ifnoteq following true}}
+                    <form action="/artistProfile/{{artistData.artist_id}}" method="POST">
+                      <button type="submit" class="btn btn-primary" name="pressedFollow" id="pressedFollow">Follow</button>
+                    </form>
+                  {{/ifnoteq}}
+                {{/if}}
             </div>
             
   

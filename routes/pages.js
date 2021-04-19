@@ -182,30 +182,37 @@ router.post('/artistProfile/:artistId', authController.getAccount, (req, res)=>{
         let artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
         var following = false;
 
-        //Check if following
-        let checkFollowing = db.query(`SELECT idfollow FROM Follow WHERE followed_by_user_id = ? AND following_artist_id = ?`, [req.acc.user_id, artistInfo[0].artist_id]);
-        
-        if(checkFollowing.length == 1){
-            //user is following
-            following = true;
+        //IF A USER -> has power to follow
+        if(req.acc.user_id){
+            //Check if following
+            let checkFollowing = db.query(`SELECT idfollow FROM Follow WHERE followed_by_user_id = ? AND following_artist_id = ?`, [req.acc.user_id, artistInfo[0].artist_id]);
+            
+            if(checkFollowing.length == 1){
+                //user is following
+                following = true;
 
-            if(req.body.pressedUnfollow == ''){
-                db2.query(`DELETE FROM Follow WHERE ? AND ?`,[{followed_by_user_id: req.acc.user_id} , {following_artist_id: artistInfo[0].artist_id}]);
+                if(req.body.pressedUnfollow == ''){
+                    db2.query(`DELETE FROM Follow WHERE ? AND ?`,[{followed_by_user_id: req.acc.user_id} , {following_artist_id: artistInfo[0].artist_id}]);
 
+                    //need to recall a query to update follower count
+                    artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
+                    following = false;
+                }
+            }else if(req.body.pressedFollow == ''){
+                db2.query(`INSERT INTO Follow SET ?`, {followed_by_user_id: req.acc.user_id, following_artist_id: artistInfo[0].artist_id});
+                
                 //need to recall a query to update follower count
                 artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
-                following = false;
+                //console.log('CLOUT COUNT: '+ artistInfo[0].followerCount);
+                following = true;
             }
-        }else if(req.body.pressedFollow == ''){
-            db2.query(`INSERT INTO Follow SET ?`, {followed_by_user_id: req.acc.user_id, following_artist_id: artistInfo[0].artist_id});
-            
-            //need to recall a query to update follower count
-            artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
-            //console.log('CLOUT COUNT: '+ artistInfo[0].followerCount);
-            following = true;
+
+            res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0], following: following});
+        }else{
+            //is an artistt
+            res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0]});
         }
 
-        res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0], following: following});
     }else{
         res.redirect('/login');
     }
