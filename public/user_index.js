@@ -34,6 +34,12 @@ function loadNotificationPane(data) {
     for (var i = 0; i < data.length; i++) {
         var notification = document.createElement("div");
         notification.classList.add("notification");
+        if (data[i]["header_text"] != "Needs Verification") {
+            notification.song_data = data[i];
+            notification.addEventListener('click', function (event) {
+                playSong(event.currentTarget.song_data);
+            });
+        }
 
         // Notification header
         var header = document.createElement("div");
@@ -51,7 +57,7 @@ function loadNotificationPane(data) {
         var data1 = document.createElement("div");
         data1.classList.add("notification-data1");
         var image = document.createElement("img");
-        image.setAttribute("src", "/song_images/" + data[i]["img_path"]);
+        image.setAttribute("src", "/song_images/" + data[i]["song_img_path"]);
         image.setAttribute("width", "50px");
         image.setAttribute("height", "50px");
         var data2 = document.createElement("div");
@@ -77,9 +83,9 @@ function loadExplorePane(data) {
         var song_item = document.createElement("btn");
         song_item.setAttribute("class", "song-item");
         song_item.setAttribute("id", "song-item");
-        song_item.song_id = data[i]["song_id"];
+        song_item.song_data = data[i];
         song_item.addEventListener('click', function (event) {
-            playSong(event.currentTarget.song_id);
+            playSong(event.currentTarget.song_data);
         });
         var image = document.createElement("img");
         if (data[i]["song_img_path"] == "") {
@@ -103,4 +109,82 @@ function loadExplorePane(data) {
         song_container.append(song_item);
     }
 
+}
+
+// MUSIC PLAYER
+
+let previous = document.querySelector('#pre');
+let play = document.querySelector('#play');
+let title = document.querySelector('#title');
+let recent_volume= document.querySelector('#volume');
+let slider = document.querySelector('#duration_slider');
+let show_duration = document.querySelector('#show_duration');
+let track_image = document.querySelector('#track_image');
+let artist = document.querySelector('#artist');
+let song_name = document.getElementById('song_name');
+let clickPlaySong = document.querySelector('#song-item');
+
+let timer;
+let playing_song = false;
+let track = document.createElement('audio');
+track.volume = .5;
+
+function playSong(song_data) {
+    console.log(song_data);
+	clearInterval(timer);
+	resetSlider();
+	track.src = "/song_audio/" + song_data["song_audio_path"];
+	title.innerHTML = song_data["song_name"];	
+	//track_image.src = "/song_images/" + song_data["song_img_path"];
+    artist.innerHTML = song_data["artist_name"];	
+    track.load();
+    track.play();
+    play.innerHTML = '<i class="fa fa-pause" aria-hidden="true"></i>';
+    playing_song = true;
+	timer = setInterval(rangeSlider, 1000);
+}
+
+function muteSound() {
+	track.volume = 0;
+	//volume.value = 0;
+}
+
+function togglePlay() {
+    if(playing_song) {
+        track.pause();
+        play.innerHTML = '<i class="fa fa-play" aria-hidden="true"></i>';
+    } else {
+        track.play();
+        play.innerHTML = '<i class="fa fa-pause" aria-hidden="true"></i>';
+    }
+    playing_song = !playing_song;
+}
+ 
+// reset song slider
+function resetSlider() {
+    slider.value = 0;
+}
+
+// change volume
+function volumeChange() {
+   track.volume = recent_volume.value / 100;
+}
+
+// change slider position 
+function changeDuration() {
+   slider_position = track.duration * (slider.value / 100);
+   track.currentTime = slider_position;
+}
+
+function rangeSlider() {
+    let position = 0;
+    // update slider position
+    if(!isNaN(track.duration)){
+        position = track.currentTime * (100 / track.duration);
+        slider.value =  position;
+    }
+    // function will run when the song is over
+    if(track.ended){
+        play.innerHTML = '<i class="fa fa-play" aria-hidden="true"></i>';
+    }
 }
