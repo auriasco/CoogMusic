@@ -32,6 +32,9 @@ router.post('/delete', fileUploadcontroller.delete);
 
 //user
 router.get('/viewArtists', DBController.viewArtists);
+router.get('/countryReport', authController.countryReport);
+router.get('/ageReport', authController.ageReport);
+
 
 
 
