@@ -263,6 +263,7 @@ exports.register =  (req, res)=>{
     //Not a musician, so create a user account
     if(isMusician === false)
     {
+
         //Create  the user account and insert it into the database
         db2.query(`INSERT INTO User SET ?`, {artist_idF: artist_id, user_id: uniqueId, user_name: username, user_email: email, country: country, age: currAge , user_password: password, user_name_display: name});
         
@@ -282,8 +283,9 @@ exports.register =  (req, res)=>{
 
     }else{
         
+        profilePic = req.file.fileName;
         //Create the musician account and insert it into the database
-        db2.query(`INSERT INTO Artist SET ?`, {artist_id: uniqueId, artist_name: username, artist_email: email, country: country, background_link: '', website_url: personal_url, artist_password: password, artist_name_display: name, biography: biography, fb_url: fb_url, ig_url: ig_url, spotify_url: spotify_url, soundcloud_url: soundcloud_url, age: currAge });
+        db2.query(`INSERT INTO Artist SET ?`, {artist_id: uniqueId, artist_name: username, artist_email: email, country: country, background_link: '', website_url: personal_url, artist_password: password, artist_name_display: name, biography: biography, fb_url: fb_url, ig_url: ig_url, spotify_url: spotify_url, soundcloud_url: soundcloud_url, age: currAge});
         
         //Cookie stuuff, same as before
         const token = jwt.sign({id: uniqueId, type: 'Artist'}, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRES_IN} );
