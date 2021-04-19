@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('https://coogmusic.xyz/getSongs')
+/*document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:5000/getSongs')
     .then(response => response.json())
     .then(data => loadNotificationPane(data['data']));
 });
@@ -195,4 +195,8 @@ function range_slider(){
 		       playsong();
            }
 	    }
-     }
+	 }
+	 */
+export function playSong(song_id) {
+    console.log(song_id);
+}

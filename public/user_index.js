@@ -65,7 +65,6 @@ function loadNotificationPane(data) {
         data1.append(image);
         data1.append(data2);
         body.append(data1);
-
         notification.append(header);
         notification.append(body);
         notification_pane.append(notification);
@@ -75,11 +74,13 @@ function loadNotificationPane(data) {
 function loadExplorePane(data) {
     var song_container = document.getElementById('song-container');
     for (var i = 0; i < data.length; i++) {
-        console.log("test");
         var song_item = document.createElement("btn");
         song_item.setAttribute("class", "song-item");
         song_item.setAttribute("id", "song-item");
-        song_item.setAttribute("onclick", "playSong()");
+        song_item.song_id = data[i]["song_id"];
+        song_item.addEventListener('click', function (event) {
+            playSong(event.currentTarget.song_id);
+        });
         var image = document.createElement("img");
         if (data[i]["song_img_path"] == "") {
             image.setAttribute("src", "/song_images/unknown.jpg");
@@ -102,7 +103,4 @@ function loadExplorePane(data) {
         song_container.append(song_item);
     }
 
-    function playSong() {
-        console.log("HEE");
-    }
 }

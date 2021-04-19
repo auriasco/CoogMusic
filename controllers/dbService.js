@@ -42,7 +42,7 @@ class DbService {
     async getSongDisplays() {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT song_name, artist_name, song_audio_path, song_img_path FROM Song;";
+                const query = "SELECT song_id, song_name, artist_name, song_audio_path, song_img_path FROM Song;";
                 connection.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
