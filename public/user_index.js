@@ -80,7 +80,6 @@ function loadNotificationPane(data) {
 function loadExplorePane(data) {
     var song_container = document.getElementById('song-container');
     for (var i = 0; i < data.length; i++) {
-
         var song_item = document.createElement("btn");
         song_item.setAttribute("class", "song-item");
         song_item.setAttribute("id", "song-item");
@@ -88,7 +87,6 @@ function loadExplorePane(data) {
         song_item.addEventListener('click', function (event) {
             playSong(event.currentTarget.song_data);
         });
-
         var image = document.createElement("img");
         if (data[i]["song_img_path"] == "") {
             image.setAttribute("src", "/song_images/unknown.jpg");
@@ -110,6 +108,7 @@ function loadExplorePane(data) {
         song_item.append(song_item_text);
         song_container.append(song_item);
     }
+
 }
 
 // MUSIC PLAYER

@@ -1,10 +1,8 @@
-
 /*document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:5000/getSongs')
     .then(response => response.json())
     .then(data => loadNotificationPane(data['data']));
 });
-
 
 let previous = document.querySelector('#pre');
 let play = document.querySelector('#play');
@@ -20,7 +18,6 @@ let present = document.querySelector('#present');
 let total = document.querySelector('#total');
 let artist = document.querySelector('#artist');
 let song_name = document.getElementById('song_name');
-let clickPlaySong = document.querySelector('#song-item') 
 
 let timer;
 let autoplay = 0;
@@ -28,100 +25,44 @@ let autoplay = 0;
 let index_no = 0;
 let Playing_song = false;
 
-
 //create a audio Element
 let track = document.createElement('audio');
-let song_list =[];
+console.log(song_name.value[1]);
 
-// async function firstAsync() {
-//     let promise = new Promise((res, rej) => {
-//         setTimeout(() => res("Now it's done!"), 1000)
-//     });
-
-//     // wait until the promise returns us a value
-//     let result = await promise; 
-  
-//     // "Now it's done!"
-//     alert(result); 
-//     };
-
-// firstAsync();
-
-var domResolve;
-domReady = new Promise (function(resolve){
-	domResolve = resolve;
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-	fetch('http://localhost:5000/getSongs')
-	.then(response => response.json())
-	.then(data => load_songs(data['data']))
-});
-
-
-function load_songs(data){
-	result = data
-	for (var i=0; i < result.length; i++){
-		song_list[i] = result[i];
-	}
-	
+for (var i=0; i < song_name.value.length; i++ ){
+	console.log(song_name.value);
 }
-
-console.log(song_list);
-
-
-
-	
-// function load_track(index_no){
-	// 	clearInterval(timer);
-	// 	reset_slider();
-	
-	// 	track.src = song_list[index_no].song_audio_path_;
-	// 	title.innerHTML = All_song[index_no].song_name;	
-	// 	track_image.src = All_song[index_no].song_image;
-	// 	artist.innerHTML = All_song[index_no].artis_name;
-	// 	track.load();
-	
-	// 	timer = setInterval(range_slider ,1000);
-	// 	total.innerHTML = 4;
-	// 	console.log(All_song.length);
-	// 	present.innerHTML = index_no + 1;
-// }
-
-	
-
-
 // Songs
 let All_song = [
 	{
 	  name: "Goosebumps",
 	  path: "song_audio/Travis_Scott_goosebumps.mp3",
 	  img: "song_images/goosebumps_travisScott.jpg",
-	  singer: "Travis Scott"
+	  singer: "1"
 	},
 	{
 	  name: "Peaches",
 	  path: "song_audio/Justin_Bieber_Peaches.mp3",
 	  img: "song_images/peaches_justin_bieber.jpg",
-	  singer: "Justin Bieber"
+	  singer: "2"
 	},
 
 	{
-		name: "Gods Plan",
+		name: "Peaches",
 		path: "song_audio/Drake_God_s_Plan.mp3",
 		img: "song_images/gods_plan.jpg",
-		singer: "Drake"
+		singer: "3"
 	},
 	{
-		name: "Yosemite",
+		name: "Peaches",
 		path: "song_audio/Travis_Scott_YOSEMITE.mp3",
 		img: "song_images/Yosemite.jpg",
-		singer: "Travis Scott"
+		singer: "4"
 	}
 
 ];
 
-//function load the track
+// function load the track
 function load_track(index_no){
 	clearInterval(timer);
 	reset_slider();
@@ -150,25 +91,21 @@ function mute_sound(){
 }
 
 
-// // checking.. the song is playing or not
-function justplay(){
+// checking.. the song is playing or not
+ function justplay(){
  	if(Playing_song==false){
  		playsong();
+
  	}else{
  		pausesong();
  	}
-}
+ }
 
-function playsong(){
-	track.play();
-	Playing_song = true;
-	play.innerHTML = '<i class="fa fa-pause" aria-hidden="true"></i>';
-}
-  
+
 // reset song slider
-function reset_slider(){
+ function reset_slider(){
  	slider.value = 0;
-}
+ }
 
 // play song
 function playsong(){
@@ -246,7 +183,7 @@ function range_slider(){
 		if(!isNaN(track.duration)){
 		   position = track.currentTime * (100 / track.duration);
 		   slider.value =  position;
-	    }
+	      }
 
        
        // function will run when the song is over
@@ -258,4 +195,8 @@ function range_slider(){
 		       playsong();
            }
 	    }
-
+	 }
+	 */
+export function playSong(song_id) {
+    console.log(song_id);
+}
