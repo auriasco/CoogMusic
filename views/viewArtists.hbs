@@ -15,15 +15,24 @@
     <nav>
         <h1> CoogMusic
         </h1>
+        {{#if acc.user_id}}
             <ul>
                 <li> <a href="/user_index">Home </a> </li>
-                <li> <a href="/ViewMusicUser">View Music </a> </li>
                 <li> <a href="/viewArtists">View Artists </a> </li>
-                <li> <a href="/CreatePlaylist">Create Playlist </a> </li>
                 <li> <a href="/editProfile">Edit Profile </a> </li>
                 <li> <a href="/auth/logout">Sign Out </a> </li>
             </ul>
-        
+        {{/if}}
+
+        {{#if acc.artist_id}}
+            <ul>
+                <li> <a href="/artist_index">Home</a> </li>
+                <li> <a href="/viewArtists">View Artists</a> </li>
+                <li> <a href="/uploadMusic">Upload Music</a> </li>
+                <li> <a href="/editArtistProfile">Edit Settings</a> </li>
+                <li> <a href="/auth/logout">Sign Out</a> </li>
+            </ul>
+        {{/if}}        
     </nav>
 
     <div class="container mt-4"> 
