@@ -5,14 +5,12 @@ const authController = require('../controllers/auth');
 
 const mysql = require('sync-mysql');
 const mysqladd = require('mysql2');
+const e = require('express');
 
 /* Middleware functions included:
 exports.viewUsers
 exports.viewArtists
-
 */
-
-
 
 //database
 const db = new mysql({
@@ -48,14 +46,62 @@ router.get('/login', (req,res)=>{
 });
 
 //User Page
-router.get('/getNotifications', (request, response) => {
+router.get('/getNotifications', authController.getAccount, (request, response) => {
+    if(request.acc) {
+        const db = dbService.getDbServiceInstance();
+        var result = null;
+        if (request.acc.user_id) {
+            result = db.getUserNotifications(request.acc.user_id);
+        } else if (request.acc.artist_id) {
+            result = db.getUserNotifications(request.acc.artist_id);
+        } /* else if (request.acc.admin_id) {
+            const result = db.getAdminNotifications(request.acc.admin_id);
+        }*/
+        result
+        .then(data => response.json({data : data}))
+        .catch(err => console.log(err));
+    } else{
+        res.redirect('/login');
+    }
+});
+
+router.get('/getSongDisplays', (request, response)=>{
     const db = dbService.getDbServiceInstance();
-    const result = db.getNotifications();
-    console.log(result);
+    const result = db.getSongDisplays();
     result
     .then(data => response.json({data : data}))
     .catch(err => console.log(err));
-})
+});
+
+router.get('/getArtistSongs/:artist_name', (request, response)=>{
+    const db = dbService.getDbServiceInstance();
+    const result = db.getArtistSongs(request.params.artist_name);
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
+
+router.post('/updateCount', authController.getAccount, (request, response)=>{
+    if(request.acc){
+        //console.log("EENNNNN");
+        const db = dbService.getDbServiceInstance();
+        var result = null;
+        if (request.acc.user_id) {
+            result = db.updateCount('', request.acc.user_id, request.body.songId);
+        } else if (request.acc.artist_id) {
+            result = db.updateCount(request.acc.artist_id, '', request.body.songId);
+        }
+        //console.log('update done');
+        
+        result
+        .then(data => response.json({data : data}))
+        .catch(err => console.log(err));
+        
+    }else{
+        res.redirect('/login');
+    }
+
+});
 
 /*
 USE OF COOKIES: authController.getAccount = the middleware function to  get the cookies
@@ -90,6 +136,34 @@ router.get('/editArtistProfile', authController.getAccount, (req, res)=>{
     }
 });
 
+router.get('/viewReportsArtist', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        let songs = db.query(`SELECT * FROM Song WHERE artist_idB = ?`,[req.acc.artist_id]);
+        var moreThanOneSong = false;
+        if(songs.length > 1){
+            moreThanOneSong = true;
+        }
+        res.render('viewReportsArtist', {acc: req.acc, songData: songs, moreThanOneSong: moreThanOneSong});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.post('/songInsights', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        var songData;
+        if(req.body.dataGroups == 'All of my songs'){
+            songData = db.query(`SELECT * FROM Song WHERE artist_idB = ?`,[req.acc.artist_id]);
+        }else{
+            songData = db.query(`SELECT * FROM Song WHERE song_name = ? AND artist_idB = ?`,[req.body.dataGroups, req.acc.artist_id]);
+        }
+        res.render('songInsights', {acc: req.acc, formData: req.body, songData: songData});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+
 router.get('/successRegister_Artist', authController.getAccount, (req, res)=>{
     if(req.acc){
         res.render('successRegister_Artist', {acc: req.acc});
@@ -105,12 +179,6 @@ router.get('/artist_index', authController.getAccount, (req, res)=>{
     }else{
         res.redirect('/login');
     }
-});
-
-//Artist Music Page
-router.get('/viewMusicArtist', (req, res) =>{
-    console.log('Get');
-    res.render('viewMusicArtist');
 });
 
 //Upload Music
@@ -173,30 +241,37 @@ router.post('/artistProfile/:artistId', authController.getAccount, (req, res)=>{
         let artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
         var following = false;
 
-        //Check if following
-        let checkFollowing = db.query(`SELECT idfollow FROM Follow WHERE followed_by_user_id = ? AND following_artist_id = ?`, [req.acc.user_id, artistInfo[0].artist_id]);
-        
-        if(checkFollowing.length == 1){
-            //user is following
-            following = true;
+        //IF A USER -> has power to follow
+        if(req.acc.user_id){
+            //Check if following
+            let checkFollowing = db.query(`SELECT idfollow FROM Follow WHERE followed_by_user_id = ? AND following_artist_id = ?`, [req.acc.user_id, artistInfo[0].artist_id]);
+            
+            if(checkFollowing.length == 1){
+                //user is following
+                following = true;
 
-            if(req.body.pressedUnfollow == ''){
-                db2.query(`DELETE FROM Follow WHERE ? AND ?`,[{followed_by_user_id: req.acc.user_id} , {following_artist_id: artistInfo[0].artist_id}]);
+                if(req.body.pressedUnfollow == ''){
+                    db2.query(`DELETE FROM Follow WHERE ? AND ?`,[{followed_by_user_id: req.acc.user_id} , {following_artist_id: artistInfo[0].artist_id}]);
 
+                    //need to recall a query to update follower count
+                    artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
+                    following = false;
+                }
+            }else if(req.body.pressedFollow == ''){
+                db2.query(`INSERT INTO Follow SET ?`, {followed_by_user_id: req.acc.user_id, following_artist_id: artistInfo[0].artist_id});
+                
                 //need to recall a query to update follower count
                 artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
-                following = false;
+                //console.log('CLOUT COUNT: '+ artistInfo[0].followerCount);
+                following = true;
             }
-        }else if(req.body.pressedFollow == ''){
-            db2.query(`INSERT INTO Follow SET ?`, {followed_by_user_id: req.acc.user_id, following_artist_id: artistInfo[0].artist_id});
-            
-            //need to recall a query to update follower count
-            artistInfo = db.query(`SELECT * FROM Artist WHERE artist_id = ?`,[artist_id]);
-            //console.log('CLOUT COUNT: '+ artistInfo[0].followerCount);
-            following = true;
+
+            res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0], following: following});
+        }else{
+            //is an artistt
+            res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0]});
         }
 
-        res.render('artistProfile', {acc: req.acc, artistData: artistInfo[0], following: following});
     }else{
         res.redirect('/login');
     }
@@ -207,21 +282,80 @@ router.post('/artistProfile/:artistId', authController.getAccount, (req, res)=>{
 
 //////////////// ADMIN PAGE ////////////////////////////////
 router.get('/viewUsers', (req, res)=>{
-    res.render('viewUsers',{userData: req.flash('data')});
+    let users = db.query(`SELECT * FROM User`);
+    //console.log(users.length); 
+    res.render('viewUsers',{userData: users, count: users.length});
 });
 
 router.get('/viewArtistsAdmin', (req, res)=>{
-    res.render('viewArtistsAdmin',{artistData: req.flash('data')});
+    let artists = db.query(`SELECT * FROM Artist`)
+    res.render('viewArtistsAdmin',{artistData: artists, count: artists.length});
 });
 
-router.get('/admin_index', (req, res)=>{
-    res.render('admin_index');
+router.get('/viewSongsAdmin', (req, res)=>{
+    let songs = db.query(`SELECT * FROM Song`)
+    res.render('viewSongsAdmin',{songData: songs, count: songs.length});
 });
 
-//User Music Page
-router.get('/viewMusicUser', (req, res) =>{
-    console.log('Get');
-    res.render('viewMusicUser');
+router.post('/viewCMActivity', (req, res)=>{
+    //req.body = has dataGroups, activityYear, dateStart, dateEnd
+        /*
+    let users = db.query(`SELECT * FROM User WHERE dateTime_created_user >= ? AND dateTime_created_user < ?`,[startDate, endDate]);
+    let artists = db.query(`SELECT * FROM Artist WHERE dateTime_created_artist >= ? AND dateTime_created_artist < ?`,[startDate, endDate]);
+    let songs = db.query(`SELECT * FROM Song WHERE release_date >= ? AND release_date < ?`,[req.body.dateStart, req.body.dateEnd]);
+    */
+    const startDate = req.body.dateStart + ' 00:00:00';
+    const endDate = req.body.dateEnd + ' 23:59:59';
+    var users;
+    var userCount = 0;
+    var artists;
+    var artistCount = 0;
+    var songs;
+    var songCount = 0;
+
+    if(req.body.dataGroups == 'User'){
+        users = db.query(`SELECT * FROM User WHERE dateTime_created_user >= ? AND dateTime_created_user < ? ORDER BY dateTime_created_user ASC`,[startDate, endDate]);
+        userCount = users.length;
+
+    }else if(req.body.dataGroups == 'Musician'){
+        artists = db.query(`SELECT * FROM Artist WHERE dateTime_created_artist >= ? AND dateTime_created_artist < ? ORDER BY dateTime_created_artist ASC`,[startDate, endDate]);
+        artistCount = artists.length;
+
+    }else if(req.body.dataGroups == 'All accounts (User and Musician)'){
+        users = db.query(`SELECT * FROM User WHERE dateTime_created_user >= ? AND dateTime_created_user < ? ORDER BY dateTime_created_user ASC`,[startDate, endDate]);
+        artists = db.query(`SELECT * FROM Artist WHERE dateTime_created_artist >= ? AND dateTime_created_artist < ? ORDER BY dateTime_created_artist ASC`,[startDate, endDate]);
+        userCount = users.length;
+        artistCount = artists.length;
+
+    }else if(req.body.dataGroups == 'Song'){
+        songs = db.query(`SELECT * FROM Song WHERE release_date >= ? AND release_date < ? ORDER BY release_date ASC`,[req.body.dateStart, req.body.dateEnd]);
+        songCount = songs.length;
+
+    }else if(req.body.dataGroups == 'Song and Musician'){
+        songs = db.query(`SELECT * FROM Song WHERE release_date >= ? AND release_date < ? ORDER BY release_date ASC`,[req.body.dateStart, req.body.dateEnd]);
+        artists = db.query(`SELECT * FROM Artist WHERE dateTime_created_artist >= ? AND dateTime_created_artist < ? ORDER BY dateTime_created_artist ASC`,[startDate, endDate]);
+        artistCount = artists.length;
+        songCount = songs.length;
+
+    }else if(req.body.dataGroups == 'Song and User'){
+        songs = db.query(`SELECT * FROM Song WHERE release_date >= ? AND release_date < ? ORDER BY release_date ASC`,[req.body.dateStart, req.body.dateEnd]);
+        users = db.query(`SELECT * FROM User WHERE dateTime_created_user >= ? AND dateTime_created_user < ? ORDER BY dateTime_created_user ASC`,[startDate, endDate]);
+        userCount = users.length;
+        songCount = songs.length;
+
+    }else if(req.body.dataGroups == 'Song and all accounts (User and Musician)'){
+        users = db.query(`SELECT * FROM User WHERE dateTime_created_user >= ? AND dateTime_created_user < ? ORDER BY dateTime_created_user ASC`,[startDate, endDate]);
+        artists = db.query(`SELECT * FROM Artist WHERE dateTime_created_artist >= ? AND dateTime_created_artist < ? ORDER BY dateTime_created_artist ASC`,[startDate, endDate]);
+        songs = db.query(`SELECT * FROM Song WHERE release_date >= ? AND release_date < ? ORDER BY release_date ASC`,[req.body.dateStart, req.body.dateEnd]);
+        artistCount = artists.length;
+        userCount = users.length;
+        songCount = songs.length;
+
+    }
+
+    
+
+    res.render('viewCMActivity', {formData: req.body, userData: users, userCount: userCount, artistData: artists, artistCount: artistCount, songData: songs, songCount: songCount});
 });
 
 router.get('/create_report', (req, res) =>{
@@ -251,6 +385,7 @@ router.get('/countryReport', authController.getAccount, (req, res)=>{
         res.redirect('/login');
     }
 });
+
 router.get('/ageReport', authController.getAccount, (req, res) =>{
     if(req.acc){
         let artists = db.query(`SELECT * FROM Artist`);
@@ -279,6 +414,7 @@ router.get('/ageReport', authController.getAccount, (req, res) =>{
         res.redirect('/login');
     }
 });
+
 router.get('/filter',authController.getAccount, (req, res) =>{
     console.log('Get');
     if(req.acc){
@@ -287,9 +423,14 @@ router.get('/filter',authController.getAccount, (req, res) =>{
     }else{
         res.redirect('/login');
     }
-    
+}
+
+router.get('/viewReportsAdmin', (req, res)=>{
+    res.render('viewReportsAdmin');
 });
 
-////////////////////////////////////////////////
+router.get('/admin_index', (req, res)=>{
+    res.render('admin_index');
+});
 
 module.exports = router;

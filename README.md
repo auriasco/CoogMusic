@@ -60,7 +60,7 @@ Git Hub:
         git commit -m "<commit_message>"
 
     BRANCHES
-    1 ) Create a branch for your desired feature
+    1 ) Create a branch for your desired featu
         git branch <branch_name>
     
     2 ) Designate that as your current working branch
@@ -69,7 +69,6 @@ Git Hub:
     3 ) View all (local and remote) branches
         git branch -a
 
-    
     PUSHING CHANGES
 
     1 ) Pull any new changes from the main branch before pushing

@@ -12,18 +12,15 @@
 </head>
 <body>
 
-<nav>
-        <h4> CoogMusic
-        </h4>
+    <nav>
+        <h1> CoogMusic </h1>
             <ul>
-                <li> <a href="/artist_index">Home</a>  </li>
-                <li> <a href="/viewMusicArtist">View Music</a>  </li>
-                <li> <a href="/viewArtists">View Artists</a>  </li>
-                <li> <a href="/createPlaylist">Create Playlist </a>  </li>
-                <li> <a href="/uploadMusic">Upload Music</a>  </li>
-                <li> <a href="/editArtistProfile">Edit Settings</a>  </li>
-                <li> <a href="/auth/logout">Sign Out</a></li>
-
+                <li> <a href="/artist_index">Home</a> </li>
+                <li> <a href="/viewArtists">View Artists</a> </li>
+                <li> <a href="/uploadMusic">Upload Music</a> </li>
+                <li> <a href="/viewReportsArtist">View Reports</a> </li>
+                <li> <a href="/editArtistProfile">Edit Settings</a> </li>
+                <li> <a href="/auth/logout">Sign Out</a> </li>
             </ul>
         
     </nav>
@@ -50,6 +47,7 @@
         <div class="form-group" style="padding-top: 25px;">
             <label for="genre">Genre</label>
             <select class="form-control" id="genre" name="genre">
+                <option style="fontcolor: lightgrey">Select Genre</option>
                 <option>hip-hop</option>
                 <option>Pop</option>
                 <option>Country</option>

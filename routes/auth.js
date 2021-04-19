@@ -21,10 +21,6 @@ router.post('/login',  authController.login);
 router.get('/logout', authController.logout);
 
 
-//admin
-router.get('/viewUsers',  DBController.viewUsers);
-router.get('/viewArtistsAdmin', DBController.viewArtistsAdmin);
-
 //artists
 router.post('/upload', fileUploadcontroller.upload);
 
@@ -34,8 +30,5 @@ router.post('/delete', fileUploadcontroller.delete);
 router.get('/viewArtists', DBController.viewArtists);
 router.get('/countryReport', authController.countryReport);
 router.get('/ageReport', authController.ageReport);
-
-
-
 
 module.exports = router;
