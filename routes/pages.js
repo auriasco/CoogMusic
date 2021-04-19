@@ -238,7 +238,6 @@ router.post('/viewCMActivity', (req, res)=>{
     let artists = db.query(`SELECT * FROM Artist WHERE dateTime_created_artist >= ? AND dateTime_created_artist < ?`,[startDate, endDate]);
     let songs = db.query(`SELECT * FROM Song WHERE release_date >= ? AND release_date < ?`,[req.body.dateStart, req.body.dateEnd]);
     */
-    console.log(req.body);
     const startDate = req.body.dateStart + ' 00:00:00';
     const endDate = req.body.dateEnd + ' 23:59:59';
     var users;
