@@ -135,7 +135,7 @@ exports.upload = function(req, res){
             if ( err ) console.log('ERROR: ' + err);
         });
     
-        fs.rename(invertSlashes(path)+"/song_images/"+img_name, invertSlashes(path)+"/song_images/" + songId + ".png", function(err) {
+        fs.rename(path+"/song_images/"+img_name, path+"/song_images/" + songId + ".png", function(err) {
             if ( err ) console.log('ERROR: ' + err);
         });
 
