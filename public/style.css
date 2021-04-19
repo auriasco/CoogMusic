@@ -79,7 +79,10 @@ h6 {
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, 310px);
     justify-content:space-evenly;
+    /*height:400px;*/
+    overflow: scroll;
 }
+
 
 .song-item {
     margin-top: 20px;

@@ -105,6 +105,15 @@ router.get('/editArtistProfile', authController.getAccount, (req, res)=>{
     }
 });
 
+router.get('/viewReportsArtist', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        res.render('viewReportsArtist', {acc: req.acc});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+
 router.get('/successRegister_Artist', authController.getAccount, (req, res)=>{
     if(req.acc){
         res.render('successRegister_Artist', {acc: req.acc});
