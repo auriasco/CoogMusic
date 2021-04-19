@@ -247,10 +247,12 @@ h6 {
 }
 
 
+/* registration */
 div.musicianDrop{
     display: none;
 }
 
+/* view artists profiles */
 .card {
     margin-right: 10px;
     margin-bottom: 10px;
@@ -258,6 +260,15 @@ div.musicianDrop{
 
 .card-text{
     max-lines: 4;
+}
+
+/* reportst */
+.table {
+    max-width: none;
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-size: small;
+
 }
 
 .song-bar-container {
