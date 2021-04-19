@@ -5,6 +5,7 @@ const authController = require('../controllers/auth');
 
 const mysql = require('sync-mysql');
 const mysqladd = require('mysql2');
+const e = require('express');
 
 /* Middleware functions included:
 exports.viewUsers
@@ -72,6 +73,28 @@ router.get('/getSongDisplays', (request, response)=>{
     .catch(err => console.log(err));
 });
 
+router.post('/updateCount', authController.getAccount, (request, response)=>{
+    if(request.acc){
+        //console.log("EENNNNN");
+        const db = dbService.getDbServiceInstance();
+        var result = null;
+        if (request.acc.user_id) {
+            result = db.updateCount('', request.acc.user_id, request.body.songId);
+        } else if (request.acc.artist_id) {
+            result = db.updateCount(request.acc.artist_id, '', request.body.songId);
+        }
+        //console.log('update done');
+        
+        result
+        .then(data => response.json({data : data}))
+        .catch(err => console.log(err));
+        
+    }else{
+        res.redirect('/login');
+    }
+
+});
+
 /*
 USE OF COOKIES: authController.getAccount = the middleware function to  get the cookies
 the getAccount exported function in the auth.js file in the CONTROLLERS folder.
@@ -107,7 +130,26 @@ router.get('/editArtistProfile', authController.getAccount, (req, res)=>{
 
 router.get('/viewReportsArtist', authController.getAccount, (req, res)=>{
     if(req.acc){
-        res.render('viewReportsArtist', {acc: req.acc});
+        let songs = db.query(`SELECT * FROM Song WHERE artist_idB = ?`,[req.acc.artist_id]);
+        var moreThanOneSong = false;
+        if(songs.length > 1){
+            moreThanOneSong = true;
+        }
+        res.render('viewReportsArtist', {acc: req.acc, songData: songs, moreThanOneSong: moreThanOneSong});
+    }else{
+        res.redirect('/login');
+    }
+});
+
+router.post('/songInsights', authController.getAccount, (req, res)=>{
+    if(req.acc){
+        var songData;
+        if(req.body.dataGroups == 'All of my songs'){
+            songData = db.query(`SELECT * FROM Song WHERE artist_idB = ?`,[req.acc.artist_id]);
+        }else{
+            songData = db.query(`SELECT * FROM Song WHERE song_name = ? AND artist_idB = ?`,[req.body.dataGroups, req.acc.artist_id]);
+        }
+        res.render('songInsights', {acc: req.acc, formData: req.body, songData: songData});
     }else{
         res.redirect('/login');
     }
