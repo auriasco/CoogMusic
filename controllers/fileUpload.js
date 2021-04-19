@@ -131,7 +131,7 @@ exports.upload = function(req, res){
 
         });
 
-        fs.rename(invertSlashes(path)+"/public/song_audio/"+audio_name, invertSlashes(path)+"/public/song_audio/" + songId + ".mp3", function(err) {
+        fs.rename(path+"/public/song_audio/"+audio_name, path+"/public/song_audio/" + songId + ".mp3", function(err) {
             if ( err ) console.log('ERROR: ' + err);
         });
     
