@@ -101,6 +101,7 @@ function loadExplorePane(data) {
         var song_name = document.createElement("h6");
         song_name.innerHTML = data[i]["song_name"];
         var artist_name = document.createElement("h6");
+
         artist_name.innerHTML = data[i]["artist_name"];
         song_item_text.append(song_name);
         song_item_text.append(artist_name);

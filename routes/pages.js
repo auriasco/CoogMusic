@@ -62,7 +62,7 @@ router.get('/getNotifications', authController.getAccount, (request, response) =
     } else{
         res.redirect('/login');
     }
-})
+});
 
 router.get('/getSongDisplays', (request, response)=>{
     const db = dbService.getDbServiceInstance();
