@@ -131,13 +131,13 @@ exports.upload = function(req, res){
 
         });
 
-        fs.rename(path+"/song_audio/"+audio_name, path+"/song_audio/" + songId + ".mp3", function(err) {
-            if ( err ) console.log('ERROR: ' + err);
-        });
+//         fs.rename(path+"/song_audio/"+audio_name, path+"/song_audio/" + songId + ".mp3", function(err) {
+//             if ( err ) console.log('ERROR: ' + err);
+//         });
     
-        fs.rename(path+"/song_images/"+img_name, path+"/song_images/" + songId + ".png", function(err) {
-            if ( err ) console.log('ERROR: ' + err);
-        });
+//         fs.rename(path+"/song_images/"+img_name, path+"/song_images/" + songId + ".png", function(err) {
+//             if ( err ) console.log('ERROR: ' + err);
+//         });
 
         return res.render('uploadMusic', {
             message: 'Song was Uploaded'
